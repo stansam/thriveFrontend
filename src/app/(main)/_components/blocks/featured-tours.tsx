@@ -10,12 +10,12 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
-import { useFeaturedPackages } from "@/lib/hooks/use-packages";
+// import { cn } from "@/lib/utils";
+// import { useFeaturedPackages } from "@/lib/hooks/use-packages";
 import { AlertCircle } from "lucide-react";
-import { WishlistButton } from "@/components/blocks/wishlist-button";
-import { useMyPackages } from "@/lib/hooks/use-packages-api";
-import { FALLBACK_PACKAGES } from "@/lib/constants";
+// import { WishlistButton } from "@/components/blocks/wishlist-button";
+// import { useMyPackages } from "@/lib/hooks/use-packages-api";
+// import { FALLBACK_PACKAGES } from "@/lib/constants";
 
 
 export function FeaturedTours() {
@@ -25,14 +25,14 @@ export function FeaturedTours() {
     const [canScrollNext, setCanScrollNext] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    const { packages: apiPackages, isLoading, isError } = useFeaturedPackages();
-    const { saved, isError: isSavedError } = useMyPackages();
-    const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
+    // const { packages: apiPackages, isLoading, isError } = useFeaturedPackages();
+    // const { saved, isError: isSavedError } = useMyPackages();
+    // const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
 
-    const packages = (apiPackages && apiPackages.length > 0) ? apiPackages : FALLBACK_PACKAGES;
+    // const packages = (apiPackages && apiPackages.length > 0) ? apiPackages : FALLBACK_PACKAGES;
 
-    const showFallback = !isLoading && !isError && apiPackages.length === 0;
-    const displayPackages = showFallback ? FALLBACK_PACKAGES : (apiPackages || []);
+    // const showFallback = !isLoading && !isError && apiPackages.length === 0;
+    // const displayPackages = showFallback ? FALLBACK_PACKAGES : (apiPackages || []);
 
     const handleViewPackage = (slug: string) => {
         router.push(`/trip/${slug}`);
