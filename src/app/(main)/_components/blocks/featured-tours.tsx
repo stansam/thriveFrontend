@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { useFeaturedPackages } from "@/lib/hooks/use-packages";
-import { Package } from "@/lib/types/package";
 import { AlertCircle } from "lucide-react";
 import { WishlistButton } from "@/components/blocks/wishlist-button";
 import { useMyPackages } from "@/lib/hooks/use-packages-api";
@@ -30,29 +29,8 @@ export function FeaturedTours() {
     const { saved, isError: isSavedError } = useMyPackages();
     const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
 
-    // Determine packages to display: API data -> Fallback data
     const packages = (apiPackages && apiPackages.length > 0) ? apiPackages : FALLBACK_PACKAGES;
 
-    // Only show fallback if NOT loading and (Error OR Empty API)
-    // Actually, if loading, we show loader.
-    // If loaded and empty/error, we show fallback. 
-    // BUT user asked for "proper error icon and message display incase of backend error".
-    // AND "fallback ... when no featured trips are found".
-
-    // Revised Logic:
-    // 1. Loading -> Show Loader
-    // 2. Error -> Show Error Message (with option to show fallback? No, explicit error requested)
-    // 3. Success but Empty -> Show Fallback
-    // 4. Success -> Show API Data
-
-    // However, usually fallback is for "Empty OR Error" to keep site pretty.
-    // Let's implement:
-    // - If Error: Show Error Alert.
-    // - If Success + Empty: Show Fallback + Info? Or just Fallback silently?
-    // User said: "fallback ... when no featured trips are found" (implies empty list).
-    // AND "error icon ... incase of backend error".
-
-    // So:
     const showFallback = !isLoading && !isError && apiPackages.length === 0;
     const displayPackages = showFallback ? FALLBACK_PACKAGES : (apiPackages || []);
 
