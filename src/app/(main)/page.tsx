@@ -1,17 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { SplineScene } from "@/components/ui/splite";
+import { SplineScene } from "./_components/splite";
 import { Card } from "@/components/ui/card"
-import { Spotlight } from "@/components/ui/spotlight"
+import { Spotlight } from "./_components/spotlight"
 import { Button } from "@/components/ui/button"
-import { BookFlightForm } from "@/components/book-flight-form"
-import { ServicesMarquee } from "@/components/blocks/services-marquee"
-import { FeaturedTours } from "@/components/blocks/featured-tours"
-import { PricingSection } from "@/components/blocks/pricing-section"
-import AboutUsSection from "@/components/ui/about-us-section"
-import FooterSection from "@/components/ui/footer-section"
-import Navbar from "@/components/ui/navbar"
+import { BookFlightForm } from "./_components/book-flight-form"
+import { ServicesMarquee } from "./_components/blocks/services-marquee"
+import { FeaturedTours } from "./_components/blocks/featured-tours"
+import { PricingSection } from "./_components/blocks/pricing-section"
+import AboutUsSection from "./_components/blocks/about-us-section"
+import FooterSection from "./_components/blocks/footer-section"
+import Navbar from "./_components/blocks/navbar"
 import { Plane, Globe, Users, Building2, Map, Info, Headphones } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -49,7 +49,7 @@ const services = [
 ]
 
 import { FloatingActionButtons } from "@/components/ui/floating-action-buttons"
-import { SearchTripsForm } from '@/components/search-trips-form';
+import { SearchTripsForm } from './_components/search-trips-form';
 
 export default function SplineSceneBasic() {
   const [activeForm, setActiveForm] = useState<'none' | 'book' | 'quote'>('none')

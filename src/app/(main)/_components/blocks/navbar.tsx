@@ -110,7 +110,7 @@ export default function Navbar() {
         }
     ])
 
-    const { isAuthenticated, _, logout, loading } = useAuth();
+    const { isAuthenticated, user, logout, loading } = useAuth();
     if (loading) return null;
 
 
@@ -232,15 +232,15 @@ export default function Navbar() {
                                         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                                             <Avatar className="h-8 w-8 border border-white/20">
                                                 <AvatarImage src="https://github.com/shadcn.png" alt="@user" />
-                                                <AvatarFallback>U</AvatarFallback>
+                                                <AvatarFallback>{user?.name?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
                                             </Avatar>
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-56 bg-[#1a1a1a] border-white/10 text-white" align="end" forceMount>
                                         <DropdownMenuLabel className="font-normal">
                                             <div className="flex flex-col space-y-1">
-                                                <p className="text-sm font-medium leading-none">Traveler</p>
-                                                <p className="text-xs leading-none text-muted-foreground">user@example.com</p>
+                                                <p className="text-sm font-medium leading-none">{user?.name || 'Traveler'}</p>
+                                                <p className="text-xs leading-none text-muted-foreground">{user?.email || 'user@example.com'}</p>
                                             </div>
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator className="bg-white/10" />
