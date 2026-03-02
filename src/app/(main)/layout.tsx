@@ -1,11 +1,11 @@
 import Script from "next/script";
-import { AuthProvider } from "@/lib/auth-context";
+import { AppProviders } from "@/lib/providers/app-providers";
 import type { Metadata } from "next";
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 
 import { Toaster } from "@/components/ui/sonner";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Home | Thrive",
@@ -24,12 +24,12 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <TooltipProvider>
-            {children}
-            <Toaster />
-          </TooltipProvider>
-        </AuthProvider>
+          <AppProviders>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
+          </AppProviders>
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"

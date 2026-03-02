@@ -48,7 +48,7 @@ const services = [
   }
 ]
 
-import { FloatingActionButtons } from "@/components/ui/floating-action-buttons"
+import { FloatingActionButtons } from "./_components/floating-action-buttons"
 import { SearchTripsForm } from './_components/search-trips-form';
 
 export default function SplineSceneBasic() {

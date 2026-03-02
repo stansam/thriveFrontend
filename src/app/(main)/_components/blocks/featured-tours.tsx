@@ -10,13 +10,10 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-// import { cn } from "@/lib/utils";
-// import { useFeaturedPackages } from "@/lib/hooks/use-packages";
+import { cn } from "@/lib/utils";
+import { useFeaturedPackages, useMyPackages, FALLBACK_PACKAGES } from "@/lib/hooks/shared/use-packages";
 import { AlertCircle } from "lucide-react";
-// import { WishlistButton } from "@/components/blocks/wishlist-button";
-// import { useMyPackages } from "@/lib/hooks/use-packages-api";
-// import { FALLBACK_PACKAGES } from "@/lib/constants";
-
+import { WishlistButton } from "@/components/blocks/wishlist-button";
 
 export function FeaturedTours() {
     const router = useRouter();
@@ -25,14 +22,12 @@ export function FeaturedTours() {
     const [canScrollNext, setCanScrollNext] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // const { packages: apiPackages, isLoading, isError } = useFeaturedPackages();
-    // const { saved, isError: isSavedError } = useMyPackages();
-    // const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
+    const { data: apiPackages, isLoading, isError } = useFeaturedPackages();
+    const { data: saved, isError: isSavedError } = useMyPackages();
+    const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
 
-    // const packages = (apiPackages && apiPackages.length > 0) ? apiPackages : FALLBACK_PACKAGES;
-
-    // const showFallback = !isLoading && !isError && apiPackages.length === 0;
-    // const displayPackages = showFallback ? FALLBACK_PACKAGES : (apiPackages || []);
+    const showFallback = !isLoading && !isError && (!apiPackages || !Array.isArray(apiPackages) || apiPackages.length === 0);
+    const packages: any[] = showFallback ? FALLBACK_PACKAGES : (apiPackages as any[]);
 
     const handleViewPackage = (slug: string) => {
         router.push(`/trip/${slug}`);
@@ -155,7 +150,7 @@ export function FeaturedTours() {
                             </div>
 
                             <CarouselContent className="ml-0 2xl:ml-[max(8rem,calc(50vw-700px))] 2xl:mr-[max(0rem,calc(50vw-700px))]">
-                                {packages.map((item) => (
+                                {packages.map((item: any) => (
                                     <CarouselItem
                                         key={item.id}
                                         className="max-w-[340px] pl-[20px] lg:max-w-[400px]"
@@ -195,7 +190,7 @@ export function FeaturedTours() {
                                                     <div className="text-lg font-semibold text-white mb-4">From ${(item.starting_price || 0).toLocaleString()}</div>
 
                                                     <div className="flex flex-wrap gap-2 mb-6">
-                                                        {(item.highlights || []).slice(0, 3).map((highlight, idx) => (
+                                                        {(item.highlights || []).slice(0, 3).map((highlight: string, idx: number) => (
                                                             <span key={idx} className="max-w-[100px] truncate text-[10px] tracking-wide px-2 py-1 rounded-full bg-white/10 text-white/90">
                                                                 {highlight}
                                                             </span>
@@ -206,7 +201,7 @@ export function FeaturedTours() {
                                                         <div>
                                                             <h4 className="font-semibold mb-2 text-white/90">What’s Included</h4>
                                                             <ul className="grid grid-cols-1 gap-1">
-                                                                {(item.inclusions || []).slice(0, 3).map((inc, i) => (
+                                                                {(item.inclusions || []).slice(0, 3).map((inc: string, i: number) => (
                                                                     <li key={i} className="flex items-center gap-2 text-muted-foreground">
                                                                         <Check className="size-3 text-green-500 shrink-0" /> <span className="truncate">{inc}</span>
                                                                     </li>
@@ -233,7 +228,7 @@ export function FeaturedTours() {
                             </CarouselContent>
                         </Carousel>
                         <div className="mt-8 flex justify-center gap-2">
-                            {packages.map((_, index) => (
+                            {packages.map((_: any, index: number) => (
                                 <button
                                     key={index}
                                     className={`h-2 w-2 rounded-full transition-colors ${currentSlide === index ? "bg-white" : "bg-neutral-700"
