@@ -47,6 +47,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       console.error('Socket connection error:', err);
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setSocket(socketInstance);
 
     return () => {

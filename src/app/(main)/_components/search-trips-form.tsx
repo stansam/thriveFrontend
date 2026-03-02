@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
-import { SearchAutocomplete } from "./search-autocomplete"
+import { SearchAutocomplete } from "../_components/search-autocomplete"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function SearchTripsForm({ className }: { className?: string }) {
@@ -17,6 +17,8 @@ export function SearchTripsForm({ className }: { className?: string }) {
 
     const handleSearch = () => {
         const params = new URLSearchParams()
+        
+        // Ensure standard keys if we extend the DTO later, but for now we just pass them
         if (duration !== "any") {
             const [min, max] = duration.split('-')
             if (min) params.append('min_days', min)

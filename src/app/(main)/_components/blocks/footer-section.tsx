@@ -98,7 +98,7 @@ export default function FooterSection() {
                 </div>
 
                 <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-12 pt-8 border-t border-white/5 text-xs text-white/40">
-                    <span>© {new Date().getFullYear()} Thrive Global Travel & Tours. All rights reserved.</span>
+                    <span>© {2026} Thrive Global Travel &amp; Tours. All rights reserved.</span>
 
                     <div className="flex gap-6">
                         <Dialog>
@@ -109,7 +109,7 @@ export default function FooterSection() {
                                 <DialogHeader>
                                     <DialogTitle>Privacy Policy</DialogTitle>
                                     <DialogDescription className="text-white/60">
-                                        Last updated: {new Date().toLocaleDateString()}
+                                        Last updated: March 2, 2026
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4 text-sm text-white/80 mt-4">

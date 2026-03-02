@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { DatePicker } from "@/components/ui/date-picker"
-import { flightService } from "@/services/flight-service"
-import { useDebounce } from "@/lib/hooks/use-debounce"
+import { flightService } from "@/lib/services/flight-service"
+import { useDebounce } from "@/lib/hooks/shared/use-debounce"
 import { Plane, Building, Briefcase, Armchair } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -23,7 +23,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { bookFlightSchema, BookFlightSchema } from "@/lib/schemas"
 import {
     Form,
     FormControl,
@@ -32,6 +31,20 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { z } from "zod"
+
+const bookFlightSchema = z.object({
+    tripType: z.enum(['round-trip', 'one-way']),
+    from: z.string().min(1, "Origin is required"),
+    to: z.string().min(1, "Destination is required"),
+    departureDate: z.date(),
+    returnDate: z.date().optional(),
+    adults: z.number().min(1, "At least 1 adult is required"),
+    children: z.number().min(0),
+    cabinClass: z.string(),
+});
+
+type BookFlightSchema = z.infer<typeof bookFlightSchema>;
 
 export function BookFlightForm({ className }: { className?: string }) {
     const router = useRouter()
@@ -43,7 +56,7 @@ export function BookFlightForm({ className }: { className?: string }) {
             adults: 1,
             children: 0,
             cabinClass: "ECONOMY",
-            departureDate: new Date(),
+            // departureDate: new Date(), // Avoid new Date() in SSR default values
         }
     })
 
@@ -147,7 +160,14 @@ export function BookFlightForm({ className }: { className?: string }) {
         if (data.children > 0) {
             params.append('children', data.children.toString());
         }
-        params.append('travelClass', data.cabinClass);
+        // Cabin Class
+        let cabinParam = 'e';
+        const cabinClass = data.cabinClass; // ADD THIS
+
+        if (cabinClass === 'PREMIUM_ECONOMY') cabinParam = 'p';
+        else if (cabinClass === 'BUSINESS') cabinParam = 'b';
+        else if (cabinClass === 'FIRST') cabinParam = 'f';
+        params.append('travelClass', cabinParam);
 
         router.push(`/flights/results?${params.toString()}`);
     }
@@ -267,7 +287,7 @@ export function BookFlightForm({ className }: { className?: string }) {
                                 />
                             </div>
                             {form.formState.errors.to && (
-                                <span className="text-xs text-red-400">{form.formState.errors.to.message}</span>
+                                <span className="text-xs text-red-400">{form.formState.errors.to.message as string}</span>
                             )}
 
                             {showToDropdown && (
@@ -275,24 +295,24 @@ export function BookFlightForm({ className }: { className?: string }) {
                                     {isSearchingTo ? (
                                         <div className="p-3 text-sm text-neutral-400 text-center">Searching...</div>
                                     ) : toResults.length > 0 ? (
-                                        toResults.map((location, idx) => (
+                                        toResults.map((loc: any, idx) => (
                                             <div
-                                                key={`${location.iataCode}-${idx}`}
+                                                key={`${loc.iataCode}-${idx}`}
                                                 className="p-2 text-sm hover:bg-white/10 cursor-pointer flex items-center gap-2"
-                                                onClick={() => handleSelectLocation(location, 'to')}
+                                                onClick={() => handleSelectLocation(loc, 'to')}
                                             >
-                                                {location.type === 'CITY' ? (
+                                                {loc.type === 'CITY' ? (
                                                     <Building className="h-4 w-4 text-neutral-400" />
                                                 ) : (
                                                     <Plane className="h-4 w-4 text-neutral-400" />
                                                 )}
                                                 <div>
-                                                    <span className="font-medium">{location.name}</span>
+                                                    <span className="font-medium">{loc.name}</span>
                                                     <span className="text-neutral-400 ml-1">
-                                                        ({location.iataCode})
+                                                        ({loc.iataCode})
                                                     </span>
                                                     <div className="text-xs text-neutral-500">
-                                                        {location.city !== location.name ? `${location.city}, ` : ''}{location.country}
+                                                        {loc.city !== loc.name ? `${loc.city}, ` : ''}{loc.country}
                                                     </div>
                                                 </div>
                                             </div>

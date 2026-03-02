@@ -384,22 +384,18 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
     // ... spring logic remains for number counting ...
     const countRef = useRef(null)
     const isInView = useInView(countRef, { once: false })
-    const [hasAnimated, setHasAnimated] = useState(false)
-
     const springValue = useSpring(0, {
         stiffness: 50,
         damping: 10,
     })
 
     useEffect(() => {
-        if (isInView && !hasAnimated) {
+        if (isInView) {
             springValue.set(value)
-            setHasAnimated(true)
-        } else if (!isInView && hasAnimated) {
+        } else {
             springValue.set(0)
-            setHasAnimated(false)
         }
-    }, [isInView, value, springValue, hasAnimated])
+    }, [isInView, value, springValue])
 
     const displayValue = useTransform(springValue, (latest) => Math.floor(latest))
 
