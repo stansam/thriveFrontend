@@ -7,7 +7,7 @@ import { Spotlight } from "./_components/spotlight"
 import { Button } from "@/components/ui/button"
 import { BookFlightForm } from "./_components/book-flight-form"
 import { ServicesMarquee } from "./_components/blocks/services-marquee"
-import { FeaturedTours } from "./_components/blocks/featured-tours"
+import { FeaturedPackages } from "./_components/blocks/featured-packages"
 import { PricingSection } from "./_components/blocks/pricing-section"
 import AboutUsSection from "./_components/blocks/about-us-section"
 import FooterSection from "./_components/blocks/footer-section"
@@ -65,7 +65,7 @@ export default function SplineSceneBasic() {
 
       {/* Hero Section */}
       <section className="flex items-center justify-center p-4 min-h-screen">
-        <Card className="w-full min-h-[600px] h-auto md:h-[600px] bg-black/[0.96] relative overflow-hidden border-neutral-800 transition-[height] duration-500 ease-in-out">
+        <Card className="w-full min-h-[600px] h-auto md:h-[600px] bg-black/96 relative overflow-hidden border-neutral-800 transition-[height] duration-500 ease-in-out">
           <Spotlight
             className="-top-40 left-0 md:left-60 md:-top-20"
             fill="white"
@@ -74,7 +74,7 @@ export default function SplineSceneBasic() {
           <div className="flex h-full flex-col md:flex-row relative">
             {/* Left content */}
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center min-h-[300px]">
-              <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+              <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-b from-neutral-50 to-neutral-400">
                 Experience the World with Thrive
               </h1>
               <p className="mt-4 text-neutral-300 max-w-lg mb-8">
@@ -91,7 +91,7 @@ export default function SplineSceneBasic() {
                 variant="outline"
                 className={cn(
                   "rounded-full h-12 border-neutral-700 bg-black/50 hover:bg-neutral-800 hover:text-white transition-all duration-300 px-6 gap-2 min-w-[160px]",
-                  activeForm === 'book' && "bg-white text-black border-white hover:bg-neutral-200"
+                  activeForm === 'book' && "bg-white text-gray-300 border-white hover:bg-neutral-200"
                 )}
                 onClick={() => toggleForm('book')}
               >
@@ -102,7 +102,7 @@ export default function SplineSceneBasic() {
                 variant="outline"
                 className={cn(
                   "rounded-full h-12 border-neutral-700 bg-black/50 hover:bg-neutral-800 hover:text-white transition-all duration-300 px-6 gap-2 min-w-[160px]",
-                  activeForm === 'quote' && "bg-white text-black border-white hover:bg-neutral-200"
+                  activeForm === 'quote' && "bg-white text-gray-300 border-white hover:bg-neutral-200"
                 )}
                 onClick={() => toggleForm('quote')}
               >
@@ -157,7 +157,7 @@ export default function SplineSceneBasic() {
       />
 
       {/* Featured Tours Section */}
-      <FeaturedTours />
+      <FeaturedPackages />
 
       {/* Pricing Section */}
       <PricingSection />
