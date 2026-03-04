@@ -1,13 +1,42 @@
+import { cn } from "@/lib/utils"
 import { LucideIcon } from "lucide-react"
 
-export function ServiceCard({ title, description, icon: Icon }: { title: string, description: string, icon: LucideIcon }) {
+export interface ServiceCardProps {
+    title: string
+    description: string
+    icon: LucideIcon
+    className?: string
+}
+
+export function ServiceCard({
+    title,
+    description,
+    icon: Icon,
+    className
+}: ServiceCardProps) {
     return (
-        <div className="flex w-[280px] flex-col items-center justify-center p-6 bg-neutral-900 border border-neutral-800 rounded-xl m-2 transition-all hover:border-neutral-700">
-            <div className="mb-4 rounded-full bg-neutral-800 p-3 text-emerald-500">
-                <Icon className="h-6 w-6" />
+        <div
+            className={cn(
+                "flex flex-col rounded-lg border-t",
+                "bg-gradient-to-b from-neutral-800/80 to-neutral-900/40 backdrop-blur-sm",
+                "p-6 text-start",
+                "hover:from-neutral-800 hover:to-neutral-900/60",
+                "w-[300px] shrink-0 border-white/10",
+                "transition-colors duration-300",
+                className
+            )}
+        >
+            <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 rounded-full bg-white/10 text-white">
+                    <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-white leading-tight">
+                    {title}
+                </h3>
             </div>
-            <h3 className="mb-2 text-xl font-bold text-white text-center">{title}</h3>
-            <p className="text-sm text-neutral-400 text-center">{description}</p>
+            <p className="text-sm text-neutral-400 leading-relaxed">
+                {description}
+            </p>
         </div>
     )
 }

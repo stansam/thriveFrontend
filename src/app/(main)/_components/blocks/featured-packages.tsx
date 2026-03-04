@@ -10,12 +10,11 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 import { useFeaturedPackages, useMyPackages, FALLBACK_PACKAGES } from "@/lib/hooks/shared/use-packages";
 import { AlertCircle } from "lucide-react";
 import { WishlistButton } from "@/components/blocks/wishlist-button";
 
-export function FeaturedTours() {
+export function FeaturedPackages() {
     const router = useRouter();
     const [carouselApi, setCarouselApi] = useState<CarouselApi>();
     const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -50,7 +49,7 @@ export function FeaturedTours() {
     }, [carouselApi]);
 
     return (
-        <section className="py-24 bg-black text-white" id="featured-tours">
+        <section className="relative py-24 bg-black text-white" id="featured-tours">
             <div className="container mx-auto px-4">
                 <div className="mb-8 flex items-end justify-between md:mb-14 lg:mb-16">
                     <div className="flex flex-col gap-4">
@@ -156,15 +155,16 @@ export function FeaturedTours() {
                                         className="max-w-[340px] pl-[20px] lg:max-w-[400px]"
                                     >
                                         <div className="group relative h-full flex flex-col overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
-                                            <div className="relative aspect-[4/3] w-full overflow-hidden">
+                                            <div className="relative aspect-4/3 w-full overflow-hidden">
                                                 <Image
-                                                    src={item.featured_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1080&auto=format&fit=crop"}
-                                                    alt={item.name || "Tour Package"}
+                                                    src={item.media?.find((m: any) => m.is_featured)?.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1080&auto=format&fit=crop"}
+                                                    alt={item.title || "Tour Package"}
                                                     fill
+                                                    priority
                                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 />
-                                                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-neutral-900 to-transparent pointer-events-none" />
+                                                <div className="absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-neutral-900 to-transparent pointer-events-none" />
                                                 <div className="absolute top-4 left-4">
                                                     <div className="text-xs font-bold text-white uppercase tracking-wider bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
                                                         {item.duration_days} Days • {item.duration_nights} Nights
@@ -186,13 +186,12 @@ export function FeaturedTours() {
 
                                             <div className="flex flex-1 flex-col justify-between p-6">
                                                 <div>
-                                                    <h3 className="text-xl font-bold mb-2 leading-tight line-clamp-2">{item.name}</h3>
-                                                    <div className="text-lg font-semibold text-white mb-4">From ${(item.starting_price || 0).toLocaleString()}</div>
+                                                    <h3 className="text-xl font-bold mb-4 leading-tight line-clamp-2">{item.title}</h3>
 
                                                     <div className="flex flex-wrap gap-2 mb-6">
-                                                        {(item.highlights || []).slice(0, 3).map((highlight: string, idx: number) => (
+                                                        {(item.itineraries || []).slice(0, 3).map((it: any, idx: number) => (
                                                             <span key={idx} className="max-w-[100px] truncate text-[10px] tracking-wide px-2 py-1 rounded-full bg-white/10 text-white/90">
-                                                                {highlight}
+                                                                {it.title}
                                                             </span>
                                                         ))}
                                                     </div>
@@ -201,13 +200,13 @@ export function FeaturedTours() {
                                                         <div>
                                                             <h4 className="font-semibold mb-2 text-white/90">What’s Included</h4>
                                                             <ul className="grid grid-cols-1 gap-1">
-                                                                {(item.inclusions || []).slice(0, 3).map((inc: string, i: number) => (
+                                                                {(item.inclusions || []).filter((inc: any) => inc.is_included).slice(0, 3).map((inc: any, i: number) => (
                                                                     <li key={i} className="flex items-center gap-2 text-muted-foreground">
-                                                                        <Check className="size-3 text-green-500 shrink-0" /> <span className="truncate">{inc}</span>
+                                                                        <Check className="size-3 text-green-500 shrink-0" /> <span className="truncate">{inc.description}</span>
                                                                     </li>
                                                                 ))}
-                                                                {(item.inclusions?.length || 0) > 3 && (
-                                                                    <li className="text-xs text-muted-foreground pl-5">+ {(item.inclusions?.length || 0) - 3} more</li>
+                                                                {(item.inclusions?.filter((inc: any) => inc.is_included)?.length || 0) > 3 && (
+                                                                    <li className="text-xs text-muted-foreground pl-5">+ {(item.inclusions?.filter((inc: any) => inc.is_included)?.length || 0) - 3} more</li>
                                                                 )}
                                                             </ul>
                                                         </div>

@@ -1,8 +1,7 @@
 export interface UserDTO {
-  id: string;
   email: string;
   name: string;
-  role: string;
+  is_admin: boolean;
 }
 
 export interface LoginRequestDTO {
