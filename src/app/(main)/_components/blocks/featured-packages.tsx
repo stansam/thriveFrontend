@@ -11,10 +11,13 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 import { useFeaturedPackages, useMyPackages, FALLBACK_PACKAGES } from "@/lib/hooks/shared/use-packages";
+import { FeaturedPackageDTO } from "@/lib/dtos/package.dto";
 import { AlertCircle } from "lucide-react";
 import { WishlistButton } from "@/components/blocks/wishlist-button";
+import { useAuth } from "@/lib/auth-context";
 
 export function FeaturedPackages() {
+    const { isAuthenticated } = useAuth();
     const router = useRouter();
     const [carouselApi, setCarouselApi] = useState<CarouselApi>();
     const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -23,13 +26,14 @@ export function FeaturedPackages() {
 
     const { data: apiPackages, isLoading, isError } = useFeaturedPackages();
     const { data: saved, isError: isSavedError } = useMyPackages();
-    const isPackageSaved = (id: string) => saved?.some((p: any) => p.id === id);
+    const isPackageSaved = (slug: string) => saved?.some((p: FeaturedPackageDTO) => p.slug === slug);
 
-    const showFallback = !isLoading && !isError && (!apiPackages || !Array.isArray(apiPackages) || apiPackages.length === 0);
-    const packages: any[] = showFallback ? FALLBACK_PACKAGES : (apiPackages as any[]);
+    const extractedPackages = apiPackages?.packages || [];
+    const showFallback = !isLoading && !isError && extractedPackages.length === 0;
+    const packages: FeaturedPackageDTO[] = showFallback ? FALLBACK_PACKAGES : extractedPackages;
 
     const handleViewPackage = (slug: string) => {
-        router.push(`/trip/${slug}`);
+        router.push(`/packages/${slug}`);
     };
 
     useEffect(() => {
@@ -111,7 +115,7 @@ export function FeaturedPackages() {
                     <>
                         {showFallback && (
                             <div className="mb-4 text-center text-sm text-neutral-500 italic">
-                                * Displaying ample tours (No featured tours found)
+                                * Displaying sample packages (No featured packages found)
                             </div>
                         )}
                         <Carousel
@@ -149,15 +153,15 @@ export function FeaturedPackages() {
                             </div>
 
                             <CarouselContent className="ml-0 2xl:ml-[max(8rem,calc(50vw-700px))] 2xl:mr-[max(0rem,calc(50vw-700px))]">
-                                {packages.map((item: any) => (
+                                {packages.map((item: FeaturedPackageDTO) => (
                                     <CarouselItem
-                                        key={item.id}
+                                        key={item.slug}
                                         className="max-w-[340px] pl-[20px] lg:max-w-[400px]"
                                     >
                                         <div className="group relative h-full flex flex-col overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50">
                                             <div className="relative aspect-4/3 w-full overflow-hidden">
                                                 <Image
-                                                    src={item.media?.find((m: any) => m.is_featured)?.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1080&auto=format&fit=crop"}
+                                                    src={item.media?.find(m => m.is_featured)?.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1080&auto=format&fit=crop"}
                                                     alt={item.title || "Tour Package"}
                                                     fill
                                                     priority
@@ -170,18 +174,20 @@ export function FeaturedPackages() {
                                                         {item.duration_days} Days • {item.duration_nights} Nights
                                                     </div>
                                                 </div>
-                                                <div className="absolute top-4 right-4">
-                                                    {isSavedError ? (
-                                                        // <AlertCircle className="w-6 h-6 text-red-500" />
-                                                        <div style={{ display: 'none' }}></div>
-                                                    ) : (
-                                                        <WishlistButton
-                                                            packageId={item.id || ''}
-                                                            initialIsSaved={isPackageSaved(item.id || '')}
-                                                            className="bg-black/20 hover:bg-black/40 text-white"
-                                                        />
-                                                    )}
-                                                </div>
+                                                {isAuthenticated && (
+                                                    <div className="absolute top-4 right-4">
+                                                        {isSavedError ? (
+                                                            // <AlertCircle className="w-6 h-6 text-red-500" />
+                                                            <div style={{ display: 'none' }}></div>
+                                                        ) : (
+                                                            <WishlistButton
+                                                                packageSlug={item.slug}
+                                                                isSaved={isPackageSaved(item.slug)}
+                                                                className="bg-black/20 hover:bg-black/40 text-white"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
 
                                             <div className="flex flex-1 flex-col justify-between p-6">
@@ -189,7 +195,7 @@ export function FeaturedPackages() {
                                                     <h3 className="text-xl font-bold mb-4 leading-tight line-clamp-2">{item.title}</h3>
 
                                                     <div className="flex flex-wrap gap-2 mb-6">
-                                                        {(item.itineraries || []).slice(0, 3).map((it: any, idx: number) => (
+                                                        {(item.itineraries || []).slice(0, 3).map((it, idx: number) => (
                                                             <span key={idx} className="max-w-[100px] truncate text-[10px] tracking-wide px-2 py-1 rounded-full bg-white/10 text-white/90">
                                                                 {it.title}
                                                             </span>
@@ -200,13 +206,13 @@ export function FeaturedPackages() {
                                                         <div>
                                                             <h4 className="font-semibold mb-2 text-white/90">What’s Included</h4>
                                                             <ul className="grid grid-cols-1 gap-1">
-                                                                {(item.inclusions || []).filter((inc: any) => inc.is_included).slice(0, 3).map((inc: any, i: number) => (
+                                                                {(item.inclusions || []).filter(inc => inc.is_included).slice(0, 3).map((inc, i: number) => (
                                                                     <li key={i} className="flex items-center gap-2 text-muted-foreground">
                                                                         <Check className="size-3 text-green-500 shrink-0" /> <span className="truncate">{inc.description}</span>
                                                                     </li>
                                                                 ))}
-                                                                {(item.inclusions?.filter((inc: any) => inc.is_included)?.length || 0) > 3 && (
-                                                                    <li className="text-xs text-muted-foreground pl-5">+ {(item.inclusions?.filter((inc: any) => inc.is_included)?.length || 0) - 3} more</li>
+                                                                {(item.inclusions?.filter(inc => inc.is_included)?.length || 0) > 3 && (
+                                                                    <li className="text-xs text-muted-foreground pl-5">+ {(item.inclusions?.filter(inc => inc.is_included)?.length || 0) - 3} more</li>
                                                                 )}
                                                             </ul>
                                                         </div>
@@ -214,7 +220,7 @@ export function FeaturedPackages() {
                                                 </div>
 
                                                 <Button
-                                                    onClick={() => handleViewPackage(item.slug || '')}
+                                                    onClick={() => handleViewPackage(item.slug)}
                                                     className="w-full mt-6 bg-white text-black hover:bg-neutral-200"
                                                 >
                                                     View Package
@@ -227,7 +233,7 @@ export function FeaturedPackages() {
                             </CarouselContent>
                         </Carousel>
                         <div className="mt-8 flex justify-center gap-2">
-                            {packages.map((_: any, index: number) => (
+                            {packages.map((_, index: number) => (
                                 <button
                                     key={index}
                                     className={`h-2 w-2 rounded-full transition-colors ${currentSlide === index ? "bg-white" : "bg-neutral-700"
