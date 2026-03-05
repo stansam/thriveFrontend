@@ -22,7 +22,7 @@ export interface PackageMediaDTO {
   is_featured: boolean;
 }
 
-export interface TravelPackageDTO {
+export interface FeaturedPackageDTO {
   title: string;
   slug: string;
   city: string;
