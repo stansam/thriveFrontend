@@ -13,9 +13,6 @@ export interface PackageSearchRequestDTO {
 export interface PackageSearchResponseDTO {
     items: PackageDTO[];
     total: number;
-    page: number;
     limit: number;
     offset: number;
-    sortBy: string;
-    sortOrder: string;
 }

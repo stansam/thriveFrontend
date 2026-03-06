@@ -10,7 +10,7 @@ export const MainService = {
     },
 
     searchPackages: async (request: PackageSearchRequestDTO) => {
-        return apiClient.post("/api/packages/search", request);
+        return apiClient.get("/api/packages", { params: { ...request } });
     },
     getFeaturedPackages: async () => {
         return apiClient.get<{ packages: PackageDTO[] }>("/api/packages/featured");

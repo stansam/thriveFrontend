@@ -18,14 +18,12 @@ export function SearchTripsForm({ className }: { className?: string }) {
     const handleSearch = () => {
         const params = new URLSearchParams()
         
-        // Ensure standard keys if we extend the DTO later, but for now we just pass them
         if (duration !== "any") {
             const [min, max] = duration.split('-')
             if (min) params.append('min_days', min)
             if (max) params.append('max_days', max)
         }
 
-        // Simple budget mapping
         if (budget === 'budget') params.append('max_price', '1000')
         if (budget === 'moderate') {
             params.append('min_price', '1000')
@@ -33,7 +31,7 @@ export function SearchTripsForm({ className }: { className?: string }) {
         }
         if (budget === 'luxury') params.append('min_price', '3000')
 
-        router.push(`/trips/results?${params.toString()}`)
+        router.push(`/packages?${params.toString()}`)
     }
 
     return (
