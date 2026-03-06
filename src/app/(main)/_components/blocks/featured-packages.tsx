@@ -11,7 +11,7 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 import { useFeaturedPackages, useMyPackages, FALLBACK_PACKAGES } from "@/lib/hooks/shared/use-packages";
-import { FeaturedPackageDTO } from "@/lib/dtos/package.dto";
+import { PackageDTO } from "@/lib/dtos/package.dto";
 import { AlertCircle } from "lucide-react";
 import { WishlistButton } from "@/components/blocks/wishlist-button";
 import { useAuth } from "@/lib/auth-context";
@@ -26,11 +26,11 @@ export function FeaturedPackages() {
 
     const { data: apiPackages, isLoading, isError } = useFeaturedPackages();
     const { data: saved, isError: isSavedError } = useMyPackages();
-    const isPackageSaved = (slug: string) => saved?.some((p: FeaturedPackageDTO) => p.slug === slug);
+    const isPackageSaved = (slug: string) => saved?.some((p: PackageDTO) => p.slug === slug);
 
     const extractedPackages = apiPackages?.packages || [];
     const showFallback = !isLoading && !isError && extractedPackages.length === 0;
-    const packages: FeaturedPackageDTO[] = showFallback ? FALLBACK_PACKAGES : extractedPackages;
+    const packages: PackageDTO[] = showFallback ? FALLBACK_PACKAGES : extractedPackages;
 
     const handleViewPackage = (slug: string) => {
         router.push(`/packages/${slug}`);
@@ -153,7 +153,7 @@ export function FeaturedPackages() {
                             </div>
 
                             <CarouselContent className="ml-0 2xl:ml-[max(8rem,calc(50vw-700px))] 2xl:mr-[max(0rem,calc(50vw-700px))]">
-                                {packages.map((item: FeaturedPackageDTO) => (
+                                {packages.map((item: PackageDTO) => (
                                     <CarouselItem
                                         key={item.slug}
                                         className="max-w-[340px] pl-[20px] lg:max-w-[400px]"

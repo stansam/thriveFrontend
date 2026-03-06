@@ -1,5 +1,5 @@
 import { apiClient } from "../api-client";
-import { FeaturedPackageDTO } from "../dtos/package.dto";
+import { PackageDTO } from "../dtos/package.dto";
 
 export const clientService = {
   getMyBookings: async () => {
@@ -9,7 +9,7 @@ export const clientService = {
     return apiClient.get<unknown>("/api/client/profile");
   },
   getSavedPackages: async () => {
-    return apiClient.get<FeaturedPackageDTO[]>("/api/client/wishlist");
+    return apiClient.get<PackageDTO[]>("/api/client/wishlist");
   },
   toggleSavedPackage: async (slug: string) => {
     return apiClient.post<unknown>("/api/client/wishlist/toggle", { slug });
