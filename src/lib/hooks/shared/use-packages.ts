@@ -3,9 +3,9 @@ import { MainService } from '@/lib/services/main.service';
 import { clientService } from '@/lib/services/client.service';
 import { useAuth } from '@/lib/auth-context';
 
-import { FeaturedPackageDTO } from '@/lib/dtos/package.dto';
+import { PackageDTO } from '@/lib/dtos/package.dto';
 
-export const FALLBACK_PACKAGES: FeaturedPackageDTO[] = [
+export const FALLBACK_PACKAGES: PackageDTO[] = [
   {
     title: 'Tropical Bali Getaway',
     slug: 'bali-getaway',
@@ -128,5 +128,18 @@ export const useTogglePackageSave = () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['saved-packages'] });
     },
+  });
+};
+
+import { PackageSearchResponseDTO } from '@/app/(main)/_schemas/package.schema';
+
+export const useSearchPackages = (request: any, queryOptions = {}) => {
+  return useQuery<PackageSearchResponseDTO>({
+    queryKey: ['packages-search', request],
+    queryFn: async () => {
+      const res = await MainService.searchPackages(request) as { data: PackageSearchResponseDTO };
+      return res.data;
+    },
+    ...queryOptions,
   });
 };

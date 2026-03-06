@@ -1,9 +1,3 @@
-export interface PackageSearchRequestDTO {
-    SearchQuery: string;
-    PageNumber: number;
-    SortBy: string;
-}
-
 export interface PackageInclusionDTO {
   description: string;
   is_included: boolean;
@@ -22,7 +16,7 @@ export interface PackageMediaDTO {
   is_featured: boolean;
 }
 
-export interface FeaturedPackageDTO {
+export interface PackageDTO {
   title: string;
   slug: string;
   city: string;

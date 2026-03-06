@@ -1,0 +1,186 @@
+{
+  "packages": [
+    {
+      "city": "Dubai",
+      "country": "United Arab Emirates",
+      "currency": "USD",
+      "description": "Experience the ultimate luxury in Dubai with our signature 5 days / 4 nights package. Enjoy stunning views, desert adventures, and world-class shopping.",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "inclusions": [
+        {
+          "description": "4-star hotel accommodation",
+          "is_included": true
+        },
+        {
+          "description": "Breakfast daily",
+          "is_included": true
+        },
+        {
+          "description": "Airport transfers",
+          "is_included": true
+        },
+        {
+          "description": "Tours & activities",
+          "is_included": true
+        },
+        {
+          "description": "Professional guide",
+          "is_included": true
+        },
+        {
+          "description": "Flights",
+          "is_included": false
+        },
+        {
+          "description": "Travel insurance",
+          "is_included": false
+        }
+      ],
+      "is_active": true,
+      "is_featured": true,
+      "itineraries": [
+        {
+          "day_number": 1,
+          "description": "Airport transfer to your 4-star hotel in Downtown Dubai for check-in and relaxation.",
+          "location": "Downtown Dubai",
+          "title": "Arrival & Check-in"
+        },
+        {
+          "day_number": 2,
+          "description": "Explore the Dubai Mall and experience the Burj Khalifa At-The-Top ticket. Watch the magnificent Fountain Show in the evening.",
+          "location": "Burj Khalifa",
+          "title": "Dubai City Tour & Burj Khalifa"
+        },
+        {
+          "day_number": 3,
+          "description": "Afternoon thrills with a Desert Safari experience, complete with dune bashing, camel riding, and a BBQ dinner under the stars.",
+          "location": "Dubai Desert",
+          "title": "Desert Safari"
+        },
+        {
+          "day_number": 4,
+          "description": "Relax on a luxurious Dubai Marina Yacht Cruise with stunning views of the city skyline. Later, enjoy an Abu Dhabi Grand Mosque tour.",
+          "location": "Dubai Marina",
+          "title": "Marina Yacht Cruise"
+        },
+        {
+          "day_number": 5,
+          "description": "Enjoy breakfast before transferring to the airport for your flight home.",
+          "location": "Dubai Airport",
+          "title": "Departure"
+        }
+      ],
+      "media": [
+        {
+          "display_order": 1,
+          "image_url": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
+          "is_featured": true
+        },
+        {
+          "display_order": 2,
+          "image_url": "https://images.unsplash.com/photo-1497366754035-f200968a6e72",
+          "is_featured": false
+        }
+      ],
+      "meta_description": "5 Days 4 Nights luxury escape to Dubai including Desert Safari, Yacht Cruise, and Burj Khalifa.",
+      "meta_title": "Dubai Luxury Escape Package",
+      "slug": "dubai-luxury-escape",
+      "title": "Dubai Luxury Escape"
+    },
+    {
+      "city": "Paris",
+      "country": "France",
+      "currency": "USD",
+      "description": "Discover the City of Light with our enchanting 6 days / 5 nights package. Enjoy the Eiffel Tower, world-class cuisine, and the finest art museums in the world.",
+      "duration_days": 6,
+      "duration_nights": 5,
+      "inclusions": [
+        {
+          "description": "4-star hotel accommodation",
+          "is_included": true
+        },
+        {
+          "description": "Breakfast daily",
+          "is_included": true
+        },
+        {
+          "description": "Airport transfers",
+          "is_included": true
+        },
+        {
+          "description": "Tours & activities",
+          "is_included": true
+        },
+        {
+          "description": "Professional guide",
+          "is_included": true
+        },
+        {
+          "description": "Flights",
+          "is_included": false
+        },
+        {
+          "description": "Travel insurance",
+          "is_included": false
+        }
+      ],
+      "is_active": true,
+      "is_featured": true,
+      "itineraries": [
+        {
+          "day_number": 1,
+          "description": "Arrive at Charles de Gaulle Airport and transfer to your 4-star boutique hotel in central Paris. Evening welcome dinner.",
+          "location": "Central Paris",
+          "title": "Arrival & Welcome"
+        },
+        {
+          "day_number": 2,
+          "description": "Visit the iconic Eiffel Tower with summit access, then stroll down the Champs-\u00c9lys\u00e9es and Arc de Triomphe.",
+          "location": "Trocad\u00e9ro",
+          "title": "Eiffel Tower & Champs-\u00c9lys\u00e9es"
+        },
+        {
+          "day_number": 3,
+          "description": "Explore the world's largest art museum, the Louvre, then wander the artistic hilltop village of Montmartre.",
+          "location": "Louvre Museum",
+          "title": "Louvre & Montmartre"
+        },
+        {
+          "day_number": 4,
+          "description": "Day trip to the opulent Palace of Versailles and its magnificent gardens, a UNESCO World Heritage Site.",
+          "location": "Versailles",
+          "title": "Palace of Versailles"
+        },
+        {
+          "day_number": 5,
+          "description": "Morning Seine River Cruise with views of Notre-Dame, followed by free time for shopping in Le Marais.",
+          "location": "Seine River",
+          "title": "Seine River Cruise & Shopping"
+        },
+        {
+          "day_number": 6,
+          "description": "Enjoy a final Parisian breakfast before transferring to the airport for your flight home.",
+          "location": "Charles de Gaulle Airport",
+          "title": "Departure"
+        }
+      ],
+      "media": [
+        {
+          "display_order": 1,
+          "image_url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+          "is_featured": true
+        },
+        {
+          "display_order": 2,
+          "image_url": "https://images.unsplash.com/photo-1499856871958-5b9357976b82",
+          "is_featured": false
+        }
+      ],
+      "meta_description": "6 Days 5 Nights romantic escape to Paris including Eiffel Tower, Louvre Museum, and Seine River Cruise.",
+      "meta_title": "Paris Romance Getaway Package",
+      "slug": "paris-romance-getaway",
+      "title": "Paris Romance Getaway"
+    }
+]
+}
