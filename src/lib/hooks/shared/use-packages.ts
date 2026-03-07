@@ -3,7 +3,7 @@ import { MainService } from '@/lib/services/main.service';
 import { clientService } from '@/lib/services/client.service';
 import { useAuth } from '@/lib/auth-context';
 
-import { PackageDTO } from '@/lib/dtos/package.dto';
+import { PackageDTO, GetPackagesResponseDTO } from '@/lib/dtos/package.dto';
 
 export const FALLBACK_PACKAGES: PackageDTO[] = [
   {
@@ -131,13 +131,12 @@ export const useTogglePackageSave = () => {
   });
 };
 
-import { PackageSearchResponseDTO } from '@/app/(main)/_schemas/package.schema';
 
 export const useSearchPackages = (request: any, queryOptions = {}) => {
-  return useQuery<PackageSearchResponseDTO>({
+  return useQuery<GetPackagesResponseDTO>({
     queryKey: ['packages-search', request],
     queryFn: async () => {
-      const res = await MainService.searchPackages(request) as { data: PackageSearchResponseDTO };
+      const res = await MainService.searchPackages(request) as { data: GetPackagesResponseDTO };
       return res.data;
     },
     ...queryOptions,
