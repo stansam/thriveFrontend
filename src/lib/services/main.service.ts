@@ -1,7 +1,6 @@
 import { apiClient } from "../api-client";
 import { FlightDetailsRequestDTO, FlightSearchRequestDTO } from "../dtos/flight.dto";
-import { PackageDTO } from "../dtos/package.dto";
-import { PackageSearchRequestDTO } from "@/app/(main)/_schemas/package.schema";
+import { PackageDTO, GetPackagesRequestDTO } from "../dtos/package.dto";
 import { LocationSearchDTO } from "../dtos/location.dto";
 
 export const MainService = {
@@ -9,7 +8,7 @@ export const MainService = {
         return apiClient.get("/api/services");
     },
 
-    searchPackages: async (request: PackageSearchRequestDTO) => {
+    searchPackages: async (request: GetPackagesRequestDTO) => {
         return apiClient.get("/api/packages", { params: { ...request } });
     },
     getFeaturedPackages: async () => {

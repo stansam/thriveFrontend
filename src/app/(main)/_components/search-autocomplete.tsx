@@ -37,7 +37,7 @@ export function SearchAutocomplete({
                 setLoading(true)
                 setIsOpen(true)
                 try {
-                    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/packages/search?q=${query}&per_page=5`)
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/packages?q=${query}&per_page=5`)
                     if (res.data?.data?.items) {
                         setData(res.data.data.items)
                     } else {
@@ -64,7 +64,7 @@ export function SearchAutocomplete({
         if (onSelect) {
             onSelect(item.name)
         } else {
-            router.push(`/trip/${item.slug}`)
+            router.push(`/packages/${item.slug}`)
         }
     }
 
@@ -72,7 +72,7 @@ export function SearchAutocomplete({
         if (e.key === 'Enter') {
             if (query.trim()) {
                 setIsOpen(false)
-                router.push(`/trips/results?q=${encodeURIComponent(query)}`)
+                router.push(`/packages?q=${encodeURIComponent(query)}`)
             }
         }
     }
