@@ -9,66 +9,64 @@ import { SearchAutocomplete } from "../_components/search-autocomplete"
 import { PackageCard } from "../_components/package-card"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useMyPackages, useSearchPackages } from '@/lib/hooks/shared/use-packages';
-import { PackageSearchRequestDTO } from "../_schemas/package.schema"
+import { GetPackagesRequestDTO } from "@/lib/dtos/package.dto"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "../_components/seperator"
 
 function SearchResultsContent() {
     const searchParams = useSearchParams()
-    // const router = useRouter() // Not currently used, but good to have if needed for navigation
+    const router = useRouter()
     const query = searchParams.get('q') || ''
     
     // UI State
     const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid')
-    const [page, setPage] = React.useState(1)
     const limit = 12
+    
+    // Derived Page State from URL
+    const urlPage = searchParams.get('current_page')
+    const currentPage = urlPage ? Math.max(1, parseInt(urlPage, 10)) : 1
 
     // Filters State
-    const [priceRange, setPriceRange] = React.useState([0, 5000])
-    const [duration, setDuration] = React.useState("any")
+    const [minPrice, setMinPrice] = React.useState<string>("")
+    const [maxPrice, setMaxPrice] = React.useState<string>("")
+    const [minDays, setMinDays] = React.useState<string>("")
+    const [maxDays, setMaxDays] = React.useState<string>("")
     const [rating, setRating] = React.useState<string[]>([])
 
     React.useEffect(() => {
-        // Sync URL params to state on mount
-        const minP = searchParams.get('min_price')
-        const maxP = searchParams.get('max_price')
-        if (minP || maxP) {
-            setPriceRange([minP ? parseInt(minP) : 0, maxP ? parseInt(maxP) : 5000])
-        }
-
-        const minD = searchParams.get('min_days')
-        const maxD = searchParams.get('max_days')
-        if (minD && maxD) setDuration(`${minD}-${maxD}`)
-        else if (minD) setDuration('11-20') // Rough approximation
+        // Sync URL params to local state on mount or URL change
+        setMinPrice(searchParams.get('min_price') || "")
+        setMaxPrice(searchParams.get('max_price') || "")
+        setMinDays(searchParams.get('min_days') || "")
+        setMaxDays(searchParams.get('max_days') || "")
 
         const hotelR = searchParams.get('hotel_rating')
         if (hotelR) setRating([hotelR])
-
-        // Initial params set, reset page
-        setPage(1)
     }, [searchParams])
 
-    // Construct API Request Payload
-    const buildRequest = (): PackageSearchRequestDTO => {
-        const req: PackageSearchRequestDTO = {
+    // Construct API Request Payload directly from URL to avoid sync lags
+    const buildRequest = (): GetPackagesRequestDTO => {
+        const req: GetPackagesRequestDTO = {
             limit,
-            offset: (page - 1) * limit
+            offset: (currentPage - 1) * limit
         }
-        if (query) req.q = query
+        
+        const q = searchParams.get('q');
+        if (q) req.q = q;
 
-        // Price
-        if (priceRange[0] > 0) req.min_price = priceRange[0]
-        if (priceRange[1] < 5000) req.max_price = priceRange[1]
+        const urlMinP = searchParams.get('min_price');
+        const urlMaxP = searchParams.get('max_price');
+        if (urlMinP) req.min_price = parseInt(urlMinP);
+        if (urlMaxP) req.max_price = parseInt(urlMaxP);
 
-        // Duration
-        if (duration !== 'any') {
-            const [min, max] = duration.split('-')
-            if (min) req.min_days = parseInt(min)
-            if (max) req.max_days = parseInt(max)
-        }
+        const urlMinD = searchParams.get('min_days');
+        const urlMaxD = searchParams.get('max_days');
+        if (urlMinD) req.min_days = parseInt(urlMinD);
+        if (urlMaxD) req.max_days = parseInt(urlMaxD);
 
         // Rating
         /* DTO doesnt support rating array natively but we pass min rating if needed or adapt backend */
@@ -77,19 +75,56 @@ function SearchResultsContent() {
     }
 
     const { data: result, isLoading } = useSearchPackages(buildRequest())
-    const packages = result?.items || []
-    const totalCount = result?.total || 0
-    const totalPages = Math.ceil(totalCount / limit)
+    const packages = result?.packages || []
+    
+    // Rely completely on backend mapped DTO for true pagination state
+    const pagination = result?.pagination
+    const totalCount = pagination?.total || 0
+    const totalPages = pagination?.total_pages || 1
+    // current_page is returned, but UI relies on URL intentionally for back/forward sync.
+    // They should match precisely if APIs are consistent.
     
     const { data: savedPackages } = useMyPackages();
     const isPackageSaved = (id: string) => savedPackages?.some((p: any) => p.slug === id);
 
-    // Handle price change
-    const handlePriceChange = (value: number[]) => {
-        setPriceRange(value)
+    const updateFilters = (newParams: Record<string, string | undefined>) => {
+        const params = new URLSearchParams(searchParams.toString())
+        
+        // When we update core filters, we explicitly drop the page count so users
+        // aren't stranded on page 3 of a query that only returns 1 page of results.
+        params.delete('current_page')
+        
+        Object.entries(newParams).forEach(([key, value]) => {
+            if (value === undefined || value === "") {
+                params.delete(key)
+            } else {
+                params.set(key, value)
+            }
+        })
+        router.push(`/packages?${params.toString()}`)
+    }
+
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams.toString())
+        if (newPage === 1) {
+             params.delete('current_page') 
+        } else {
+             params.set('current_page', newPage.toString())
+        }
+        router.push(`/packages?${params.toString()}`)
+    }
+
+    // Handle price change from UI
+    const handlePriceApply = () => {
+        updateFilters({ min_price: minPrice, max_price: maxPrice })
+    }
+
+    const handleDurationApply = () => {
+        updateFilters({ min_days: minDays, max_days: maxDays })
     }
 
     const handleRatingChange = (checked: boolean, value: string) => {
+        // UI only for now unless schema adapts
         if (checked) {
             setRating([...rating, value])
         } else {
@@ -152,24 +187,24 @@ function SearchResultsContent() {
                         <Button
                             variant="outline"
                             size="icon"
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                            disabled={page === 1 || isLoading}
-                            className="h-10 w-10 border-white/20 hover:bg-white hover:text-black"
+                            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                            disabled={currentPage === 1 || isLoading}
+                            className="h-10 w-10 border-white/20 hover:bg-white hover:text-gray-900 text-black"
                         >
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
                         
                         <div className="flex items-center gap-1 mx-4 text-sm font-medium">
-                            <span className="text-white">Page {page}</span>
+                            <span className="text-white">Page {currentPage}</span>
                             <span className="text-neutral-500">of {totalPages}</span>
                         </div>
 
                         <Button
                             variant="outline"
                             size="icon"
-                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                            disabled={page === totalPages || isLoading}
-                            className="h-10 w-10 border-white/20 hover:bg-white hover:text-black"
+                            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                            disabled={currentPage === totalPages || isLoading}
+                            className="h-10 w-10 border-white/20 hover:bg-white hover:text-gray-900 text-black"
                         >
                             <ChevronRight className="h-4 w-4" />
                         </Button>
@@ -187,43 +222,64 @@ function SearchResultsContent() {
 
                     {/* Price Range */}
                     <div className="space-y-4">
-                        <div className="flex justify-between text-sm">
-                            <Label>Price Range</Label>
-                            <span className="text-emerald-400 font-mono">${priceRange[0]} - ${priceRange[1]}</span>
+                        <div className="flex justify-between items-center text-sm">
+                            <Label>Price Range (USD)</Label>
                         </div>
-                        <Slider
-                            defaultValue={[0, 5000]}
-                            max={10000}
-                            step={100}
-                            value={priceRange}
-                            onValueChange={handlePriceChange}
-                            className="py-4"
-                        />
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                                <Label className="text-xs text-neutral-400">Min</Label>
+                                <Input 
+                                    type="number" 
+                                    placeholder="0" 
+                                    value={minPrice} 
+                                    onChange={(e) => setMinPrice(e.target.value)} 
+                                    className="h-8 bg-neutral-800/50 border-white/10"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <Label className="text-xs text-neutral-400">Max</Label>
+                                <Input 
+                                    type="number" 
+                                    placeholder="Any" 
+                                    value={maxPrice} 
+                                    onChange={(e) => setMaxPrice(e.target.value)} 
+                                    className="h-8 bg-neutral-800/50 border-white/10"
+                                />
+                            </div>
+                        </div>
+                        <Button variant="secondary" size="sm" className="w-full text-xs h-8" onClick={handlePriceApply}>Apply Price</Button>
                     </div>
 
                     <Separator className="bg-white/10" />
 
                     {/* Duration */}
-                    <div className="space-y-3">
-                        <Label>Duration</Label>
-                        <RadioGroup value={duration} onValueChange={setDuration}>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="any" id="d-any" className="border-emerald-500 text-emerald-500" />
-                                <Label htmlFor="d-any" className="font-normal text-neutral-300">Any</Label>
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center text-sm">
+                            <Label>Duration (Days)</Label>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                                <Label className="text-xs text-neutral-400">Min</Label>
+                                <Input 
+                                    type="number" 
+                                    placeholder="1" 
+                                    value={minDays} 
+                                    onChange={(e) => setMinDays(e.target.value)} 
+                                    className="h-8 bg-neutral-800/50 border-white/10"
+                                />
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="1-5" id="d-short" className="border-emerald-500 text-emerald-500" />
-                                <Label htmlFor="d-short" className="font-normal text-neutral-300">Short (1-5 days)</Label>
+                            <div className="space-y-1">
+                                <Label className="text-xs text-neutral-400">Max</Label>
+                                <Input 
+                                    type="number" 
+                                    placeholder="Any" 
+                                    value={maxDays} 
+                                    onChange={(e) => setMaxDays(e.target.value)} 
+                                    className="h-8 bg-neutral-800/50 border-white/10"
+                                />
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="6-10" id="d-medium" className="border-emerald-500 text-emerald-500" />
-                                <Label htmlFor="d-medium" className="font-normal text-neutral-300">Medium (6-10 days)</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="11-20" id="d-long" className="border-emerald-500 text-emerald-500" />
-                                <Label htmlFor="d-long" className="font-normal text-neutral-300">Long (11+ days)</Label>
-                            </div>
-                        </RadioGroup>
+                        </div>
+                        <Button variant="secondary" size="sm" className="w-full text-xs h-8" onClick={handleDurationApply}>Apply Duration</Button>
                     </div>
 
                     <Separator className="bg-white/10" />
@@ -250,11 +306,14 @@ function SearchResultsContent() {
 
                     <Button
                         variant="outline"
-                        className="w-full border-white/20 hover:bg-white hover:text-black mt-4"
+                        className="w-full border-white/20 hover:bg-white hover:text-gray-700 text-black mt-4"
                         onClick={() => {
-                            setPriceRange([0, 5000])
-                            setDuration("any")
+                            setMinPrice("")
+                            setMaxPrice("")
+                            setMinDays("")
+                            setMaxDays("")
                             setRating([])
+                            router.push('/packages')
                         }}
                     >
                         Reset Filters
@@ -292,6 +351,12 @@ export default function SearchResultsPage() {
                         <SearchAutocomplete
                             placeholder="Explore destinations, tours or hotels..."
                             className="bg-neutral-900 border-neutral-800"
+                            onSelect={(val) => {
+                                const params = new URLSearchParams(window.location.search);
+                                if (val) params.set('q', val);
+                                else params.delete('q');
+                                window.location.href = `/packages?${params.toString()}`;
+                            }}
                         />
                     </div>
                 </div>
