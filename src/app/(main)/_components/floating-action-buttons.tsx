@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { ArrowUp, MessageCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { CONTACT } from "@/lib/constants/contact.constants"
 
 export function FloatingActionButtons() {
     const [showBackToTop, setShowBackToTop] = useState(false)
@@ -32,7 +33,7 @@ export function FloatingActionButtons() {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
             {/* WhatsApp Button */}
             <motion.a
-                href="https://wa.me/123456789"
+                href={CONTACT.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ scale: 0, opacity: 0 }}

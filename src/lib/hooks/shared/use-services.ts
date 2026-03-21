@@ -1,10 +1,50 @@
-import { MainService } from "@/lib/services/main.service";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query'
+import { MainService } from '@/lib/services/main.service'
+import type { LandingService } from '@/lib/constants/landing.constants'
+import { LANDING_SERVICES } from '@/lib/constants/landing.constants'
+import type { LucideIcon } from 'lucide-react'
+import { Plane, Users, Building2, Map, Info, Headphones } from 'lucide-react'
 
-export const useServices = () => {
-    return useQuery({
-        queryKey: ['services'],
-        queryFn: () => MainService.getServices(),
-        retry: 1,
-    });      
+const IS_DEV = process.env.NODE_ENV === 'development'
+
+/** Maps backend icon-name strings → Lucide icon components */
+const ICON_MAP: Record<string, LucideIcon> = {
+  Plane,
+  Users,
+  Building2,
+  Map,
+  Info,
+  Headphones,
+}
+
+/**
+ * Fetches travel services from the backend and maps them to LandingService shape.
+ *
+ * Fallback strategy:
+ *   - Development: shows LANDING_SERVICES on error OR if backend returns empty.
+ *   - Production:  shows LANDING_SERVICES on error only; empty response → empty state.
+ */
+export function useServices() {
+  return useQuery<LandingService[]>({
+    queryKey: ['landing-services'],
+    queryFn: async () => {
+      const result = await MainService.getServices()
+      const raw = result as Array<{ title: string; description: string; icon: string }>
+
+      if (IS_DEV && (!raw || raw.length === 0)) {
+        return LANDING_SERVICES
+      }
+
+      const mapped: LandingService[] = (raw ?? []).map((s) => ({
+        title: s.title,
+        description: s.description,
+        icon: ICON_MAP[s.icon] ?? Plane,
+      }))
+
+      return mapped.length > 0 ? mapped : IS_DEV ? LANDING_SERVICES : []
+    },
+    retry: 1,
+    staleTime: 1000 * 60 * 60, // 1 hour — services are fairly static
+    placeholderData: IS_DEV ? LANDING_SERVICES : undefined,
+  })
 }

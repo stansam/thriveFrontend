@@ -1,6 +1,7 @@
 "use client"
 
 import { useAuth } from "@/lib/auth-context";
+import { CONTACT } from "@/lib/constants/contact.constants";
 import React, { useState } from 'react'
 import Link from 'next/link'
 import {
@@ -73,7 +74,7 @@ function MobileNav({ links }: MobileNavProps) {
                     ))}
                     <div className="mt-8 border-t border-white/10 pt-4">
                         <p className="text-sm text-white/60 mb-2">Need help?</p>
-                        <p className="text-[#88734C] font-mono text-lg">+123456789</p>
+                        <a href={CONTACT.whatsappUrl} className="text-[#88734C] font-mono text-lg">{CONTACT.whatsapp}</a>
                     </div>
                 </div>
             </PopoverContent>
@@ -84,7 +85,6 @@ function MobileNav({ links }: MobileNavProps) {
 // --- Main Navbar Component ---
 
 export default function Navbar() {
-    // const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [notifications, setNotifications] = useState<Notification[]>([
         {
@@ -144,7 +144,7 @@ export default function Navbar() {
                     <span className="hidden sm:inline text-white/70">Premium Travel Services</span>
                     <div className="flex items-center gap-2">
                         <span className="text-[#88734C] animate-pulse">Urgent flight or quote?</span>
-                        <span>WhatsApp: <a href="https://wa.me/123456789" className="hover:text-[#88734C] transition-colors font-mono">+123456789</a></span>
+                        <span>WhatsApp: <a href={CONTACT.whatsappUrl} className="hover:text-[#88734C] transition-colors font-mono">{CONTACT.whatsapp}</a></span>
                     </div>
                 </div>
             </div>
@@ -260,7 +260,7 @@ export default function Navbar() {
                                                 e.preventDefault();
                                                 logout();
                                             }}
-                                            className="focus:bg-white/5 focus:text-white cursor-pointer text-red-400 focus:text-red-400">
+                                            className="focus:bg-white/5 cursor-pointer text-red-400 focus:text-red-400">
                                             <LogOut className="mr-2 h-4 w-4" />
                                             <span>Log out</span>
                                         </DropdownMenuItem>

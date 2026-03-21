@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, type ReactNode } from "react"
 import {
     Plane,
     Users,
@@ -18,14 +17,73 @@ import {
     Award,
     Clock,
 } from "lucide-react"
-import { motion, useScroll, useTransform, useInView, useSpring, type Variants } from "framer-motion"
+import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion"
+import type { Variants } from "framer-motion"
+import Image from "next/image"
+
+// Module-level constants — static data, not recreated on each render
+const SERVICES = [
+    {
+        icon: <Plane className="w-6 h-6" />,
+        secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "Flight Booking",
+        description:
+            "Comprehensive domestic and international airline ticket booking services tailored to your schedule and budget.",
+        position: "left" as const,
+    },
+    {
+        icon: <Users className="w-6 h-6" />,
+        secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "Group Travel",
+        description:
+            "Expert coordination for families, churches, and nonprofits, ensuring seamless group travel experiences.",
+        position: "left" as const,
+    },
+    {
+        icon: <Building2 className="w-6 h-6" />,
+        secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "Corporate Travel",
+        description:
+            "Professional corporate travel planning that streamlines logistics for businesses and global travelers.",
+        position: "left" as const,
+    },
+    {
+        icon: <Map className="w-6 h-6" />,
+        secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "Itinerary Planning",
+        description:
+            "Detailed itinerary planning to maximize your trip, including optional hotel bookings and activity scheduling.",
+        position: "right" as const,
+    },
+    {
+        icon: <FileText className="w-6 h-6" />,
+        secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "Travel Consultation",
+        description:
+            "Expert advice on visa rules, destination requirements, and travel regulations to keep you informed.",
+        position: "right" as const,
+    },
+    {
+        icon: <Headphones className="w-6 h-6" />,
+        secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
+        title: "24/7 Concierge",
+        description:
+            "Reliable 24/7 concierge support providing immediate assistance before, during, and after your journey.",
+        position: "right" as const,
+    },
+]
+
+const STATS = [
+    { icon: <Award />, value: 100, label: "Satisfaction", suffix: "%" },
+    { icon: <Globe />, value: 50, label: "Destinations", suffix: "+" },
+    { icon: <Clock />, value: 24, label: "Support Hours", suffix: "/7" },
+    { icon: <Users />, value: 500, label: "Happy Travelers", suffix: "+" },
+]
 
 export default function AboutUsSection() {
-    const [isVisible, setIsVisible] = useState(false)
     const sectionRef = useRef<HTMLDivElement>(null)
     const statsRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
-    const isStatsInView = useInView(statsRef, { once: false, amount: 0.3 })
 
     // Parallax effect for decorative elements
     const { scrollYProgress } = useScroll({
@@ -37,10 +95,6 @@ export default function AboutUsSection() {
     const y2 = useTransform(scrollYProgress, [0, 1], [0, 50])
     const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 20])
     const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -20])
-
-    useEffect(() => {
-        setIsVisible(true)
-    }, [])
 
     const containerVariants: Variants = {
         hidden: { opacity: 1 }, // Changed to visible initially
@@ -63,69 +117,12 @@ export default function AboutUsSection() {
         },
     }
 
-    const services = [
-        {
-            icon: <Plane className="w-6 h-6" />,
-            secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "Flight Booking",
-            description:
-                "Comprehensive domestic and international airline ticket booking services tailored to your schedule and budget.",
-            position: "left",
-        },
-        {
-            icon: <Users className="w-6 h-6" />,
-            secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "Group Travel",
-            description:
-                "Expert coordination for families, churches, and nonprofits, ensuring seamless group travel experiences.",
-            position: "left",
-        },
-        {
-            icon: <Building2 className="w-6 h-6" />,
-            secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "Corporate Travel",
-            description:
-                "Professional corporate travel planning that streamlines logistics for businesses and global travelers.",
-            position: "left",
-        },
-        {
-            icon: <Map className="w-6 h-6" />,
-            secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "Itinerary Planning",
-            description:
-                "Detailed itinerary planning to maximize your trip, including optional hotel bookings and activity scheduling.",
-            position: "right",
-        },
-        {
-            icon: <FileText className="w-6 h-6" />,
-            secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "Travel Consultation",
-            description:
-                "Expert advice on visa rules, destination requirements, and travel regulations to keep you informed.",
-            position: "right",
-        },
-        {
-            icon: <Headphones className="w-6 h-6" />,
-            secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-            title: "24/7 Concierge",
-            description:
-                "Reliable 24/7 concierge support providing immediate assistance before, during, and after your journey.",
-            position: "right",
-        },
-    ]
-
-    const stats = [
-        { icon: <Award />, value: 100, label: "Satisfaction", suffix: "%" },
-        { icon: <Globe />, value: 50, label: "Destinations", suffix: "+" },
-        { icon: <Clock />, value: 24, label: "Support Hours", suffix: "/7" },
-        { icon: <Users />, value: 500, label: "Happy Travelers", suffix: "+" },
-    ]
 
     return (
         <section
             id="about-section"
             ref={sectionRef}
-            className="w-full py-24 px-4 bg-gradient-to-b from-[#F2F2EB] to-[#F8F8F2] text-[#202e44] overflow-hidden relative"
+            className="w-full py-24 px-4 bg-linear-to-b from-[#F2F2EB] to-[#F8F8F2] text-[#202e44] overflow-hidden relative"
         >
             {/* Decorative background elements */}
             <motion.div
@@ -194,7 +191,7 @@ export default function AboutUsSection() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
                     {/* Left Column */}
                     <div className="space-y-16">
-                        {services
+                        {SERVICES
                             .filter((service) => service.position === "left")
                             .map((service, index) => (
                                 <ServiceItem
@@ -211,7 +208,7 @@ export default function AboutUsSection() {
                     </div>
 
                     {/* Center Image */}
-                    <div className="flex justify-center items-center order-first md:order-none mb-8 md:mb-0">
+                    <div className="flex justify-center items-center order-first md:order-0 mb-8 md:mb-0">
                         <motion.div className="relative w-full max-w-xs" variants={itemVariants}>
                             <motion.div
                                 className="rounded-md overflow-hidden shadow-xl"
@@ -220,14 +217,17 @@ export default function AboutUsSection() {
                                 transition={{ duration: 0 }}
                                 whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
                             >
-                                {/* Changed to CEO Woman image */}
-                                <img
-                                    src="/edna.jpeg"
-                                    alt="Thrive CEO"
-                                    className="w-full h-full object-cover aspect-[3/4]"
-                                />
+                                <div className="relative w-full aspect-3/4">
+                                    <Image
+                                        src="/edna.jpeg"
+                                        alt="Dr. Edna Kemboi — Founder & CEO of Thrive Global Travel & Tours"
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 80vw, 280px"
+                                    />
+                                </div>
                                 <motion.div
-                                    className="absolute inset-0 bg-gradient-to-t from-[#202e44]/90 to-transparent flex items-end justify-center p-6 text-center"
+                                    className="absolute inset-0 bg-linear-to-t from-[#202e44]/90 to-transparent flex items-end justify-center p-6 text-center"
                                     initial={{ opacity: 1 }} // Static display
                                     animate={{ opacity: 1 }}
                                 >
@@ -261,7 +261,7 @@ export default function AboutUsSection() {
 
                     {/* Right Column */}
                     <div className="space-y-16">
-                        {services
+                        {SERVICES
                             .filter((service) => service.position === "right")
                             .map((service, index) => (
                                 <ServiceItem
@@ -282,11 +282,11 @@ export default function AboutUsSection() {
                 <motion.div
                     ref={statsRef}
                     className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-                    initial="visible" // Changed to visible
+                    initial="visible"
                     animate="visible"
                     variants={containerVariants}
                 >
-                    {stats.map((stat, index) => (
+                {STATS.map((stat, index) => (
                         <StatCounter
                             key={index}
                             icon={stat.icon}
@@ -325,8 +325,8 @@ export default function AboutUsSection() {
 
 
 interface ServiceItemProps {
-    icon: React.ReactNode
-    secondaryIcon?: React.ReactNode
+    icon: ReactNode
+    secondaryIcon?: ReactNode
     title: string
     description: string
     variants: Variants

@@ -1,63 +1,52 @@
 'use client'
 
-import * as React from "react"
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card } from "@/components/ui/card"
-import { MapPin, Minus, Plus, Search } from "lucide-react"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { DatePicker } from "@/components/ui/date-picker"
-import { flightService } from "@/lib/services/flight-service"
-import { useDebounce } from "@/lib/hooks/shared/use-debounce"
-import { Plane, Building, Briefcase, Armchair } from "lucide-react"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { z } from "zod"
+import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 
-const bookFlightSchema = z.object({
-    tripType: z.enum(['round-trip', 'one-way']),
-    from: z.string().min(1, "Origin is required"),
-    to: z.string().min(1, "Destination is required"),
-    departureDate: z.date(),
-    returnDate: z.date().optional(),
-    adults: z.number().min(1, "At least 1 adult is required"),
-    children: z.number().min(0),
-    cabinClass: z.string(),
-});
-
-type BookFlightSchema = z.infer<typeof bookFlightSchema>;
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card } from '@/components/ui/card'
+import { DatePicker } from '@/components/ui/date-picker'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { MapPin, Minus, Plus, Search, Plane, Building } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { flightService } from '@/lib/services/flight-service'
+import { useDebounce } from '@/lib/hooks/shared/use-debounce'
+import {
+  BookFlightFormSchema,
+  type BookFlightFormValues,
+  type LocationResult,
+} from '@/lib/types/flight-form.types'
 
 export function BookFlightForm({ className }: { className?: string }) {
     const router = useRouter()
 
-    const form = useForm<BookFlightSchema>({
-        resolver: zodResolver(bookFlightSchema),
+    const form = useForm<BookFlightFormValues>({
+        resolver: zodResolver(BookFlightFormSchema),
         defaultValues: {
-            tripType: "round-trip",
+            tripType: 'round-trip',
             adults: 1,
             children: 0,
-            cabinClass: "ECONOMY",
-            // departureDate: new Date(), // Avoid new Date() in SSR default values
-        }
+            cabinClass: 'ECONOMY',
+        },
     })
 
     const { watch, setValue, control, handleSubmit } = form
@@ -65,66 +54,63 @@ export function BookFlightForm({ className }: { className?: string }) {
     const adults = watch("adults")
     const children = watch("children")
 
-    const [showFromDropdown, setShowFromDropdown] = React.useState(false)
-    const [showToDropdown, setShowToDropdown] = React.useState(false)
-    const [fromValue, setFromValue] = React.useState("")
-    const [toValue, setToValue] = React.useState("")
+    const [showFromDropdown, setShowFromDropdown] = useState(false)
+    const [showToDropdown, setShowToDropdown] = useState(false)
+    const [fromValue, setFromValue] = useState("")
+    const [toValue, setToValue] = useState("")
 
-    const [fromResults, setFromResults] = React.useState<any[]>([])
-    const [toResults, setToResults] = React.useState<any[]>([])
-    const [isSearchingFrom, setIsSearchingFrom] = React.useState(false)
-    const [isSearchingTo, setIsSearchingTo] = React.useState(false)
+    const [fromResults, setFromResults] = useState<LocationResult[]>([])
+    const [toResults, setToResults] = useState<LocationResult[]>([])
+    const [isSearchingFrom, setIsSearchingFrom] = useState(false)
+    const [isSearchingTo, setIsSearchingTo] = useState(false)
 
-    // Debounced search terms
     const debouncedFromValue = useDebounce(fromValue, 300)
     const debouncedToValue = useDebounce(toValue, 300)
 
     // Effect for Origin Search
-    React.useEffect(() => {
+    useEffect(() => {
         const searchOrigin = async () => {
             if (debouncedFromValue.length < 2) {
                 setFromResults([])
                 return
             }
-
             setIsSearchingFrom(true)
             try {
                 const response = await flightService.searchLocations(debouncedFromValue)
                 if (response.success) {
-                    setFromResults(response.data)
+                    setFromResults(response.data as LocationResult[])
                 }
             } catch (error) {
-                console.error("Failed to search origin:", error)
+                console.error('Failed to search origin:', error)
                 setFromResults([])
             } finally {
                 setIsSearchingFrom(false)
             }
         }
-        searchOrigin()
+        void searchOrigin()
     }, [debouncedFromValue])
 
     // Effect for Destination Search
-    React.useEffect(() => {
+    useEffect(() => {
         const searchDestination = async () => {
             if (debouncedToValue.length < 2) {
                 setToResults([])
                 return
             }
-
             setIsSearchingTo(true)
             try {
                 const response = await flightService.searchLocations(debouncedToValue)
                 if (response.success) {
-                    setToResults(response.data)
+                    setToResults(response.data as LocationResult[])
                 }
             } catch (error) {
-                console.error("Failed to search destination:", error)
+                console.error('Failed to search destination:', error)
                 setToResults([])
             } finally {
                 setIsSearchingTo(false)
             }
         }
-        searchDestination()
+        void searchDestination()
     }, [debouncedToValue])
 
     const extractCode = (str: string) => {
@@ -132,44 +118,44 @@ export function BookFlightForm({ className }: { className?: string }) {
         return match ? match[1] : str;
     }
 
-    const handleSelectLocation = (location: any, type: 'from' | 'to') => {
-        const displayValue = `${location.name} (${location.iataCode})`;
-        const code = location.iataCode;
+    const handleSelectLocation = (location: LocationResult, type: 'from' | 'to') => {
+        const displayValue = `${location.name} (${location.iataCode})`
+        const code = location.iataCode
 
         if (type === 'from') {
-            setFromValue(displayValue);
-            setValue("from", code); // Set form value
-            setShowFromDropdown(false);
+            setFromValue(displayValue)
+            setValue('from', code)
+            setShowFromDropdown(false)
         } else {
-            setToValue(displayValue);
-            setValue("to", code); // Set form value
-            setShowToDropdown(false);
+            setToValue(displayValue)
+            setValue('to', code)
+            setShowToDropdown(false)
         }
     }
 
-    const onSubmit = (data: BookFlightSchema) => {
-        const params = new URLSearchParams();
-        params.append('origin', data.from);
-        params.append('destination', data.to);
-        params.append('departureDate', data.departureDate.toISOString().split('T')[0]);
+    const onSubmit = (data: BookFlightFormValues) => {
+        const params = new URLSearchParams()
+        params.append('origin', data.from)
+        params.append('destination', data.to)
+        params.append('departureDate', data.departureDate.toISOString().split('T')[0] ?? '')
 
         if (data.tripType === 'round-trip' && data.returnDate) {
-            params.append('returnDate', data.returnDate.toISOString().split('T')[0]);
+            params.append('returnDate', data.returnDate.toISOString().split('T')[0] ?? '')
         }
-        params.append('adults', data.adults.toString());
+        params.append('adults', data.adults.toString())
         if (data.children > 0) {
-            params.append('children', data.children.toString());
+            params.append('children', data.children.toString())
         }
-        // Cabin Class
-        let cabinParam = 'e';
-        const cabinClass = data.cabinClass; // ADD THIS
 
-        if (cabinClass === 'PREMIUM_ECONOMY') cabinParam = 'p';
-        else if (cabinClass === 'BUSINESS') cabinParam = 'b';
-        else if (cabinClass === 'FIRST') cabinParam = 'f';
-        params.append('travelClass', cabinParam);
+        const cabinMap: Record<string, string> = {
+            PREMIUM_ECONOMY: 'p',
+            BUSINESS: 'b',
+            FIRST: 'f',
+        }
+        const cabinParam = cabinMap[data.cabinClass] ?? 'e'
+        params.append('travelClass', cabinParam)
 
-        router.push(`/flights/results?${params.toString()}`);
+        router.push(`/flights/results?${params.toString()}`)
     }
 
     return (
@@ -295,9 +281,9 @@ export function BookFlightForm({ className }: { className?: string }) {
                                     {isSearchingTo ? (
                                         <div className="p-3 text-sm text-neutral-400 text-center">Searching...</div>
                                     ) : toResults.length > 0 ? (
-                                        toResults.map((loc: any, idx) => (
+                                        toResults.map((loc) => (
                                             <div
-                                                key={`${loc.iataCode}-${idx}`}
+                                                key={`${loc.iataCode}-to`}
                                                 className="p-2 text-sm hover:bg-white/10 cursor-pointer flex items-center gap-2"
                                                 onClick={() => handleSelectLocation(loc, 'to')}
                                             >
@@ -350,7 +336,7 @@ export function BookFlightForm({ className }: { className?: string }) {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="w-[1px] h-6 bg-white/10"></div>
+                                <div className="w-px h-6 bg-white/10"></div>
                                 <div className="flex flex-col items-center">
                                     <span className="text-[10px] text-neutral-500">Children</span>
                                     <div className="flex items-center gap-2">
