@@ -16,9 +16,6 @@ import { PricingView } from '../_components/blocks/pricing-view'
 export function PricingContainer() {
   const { data: plans, isLoading, isError } = usePricing()
 
-  const corporatePlans = (plans ?? []).filter((p) => p.group === 'corporate')
-  const transactionalPlans = (plans ?? []).filter((p) => p.group === 'transactional')
-
   const hasFallback = isError || (IS_DEV && (plans ?? []).length === 0)
   const displayPlans = hasFallback ? FALLBACK_PRICING : (plans ?? [])
   const displayCorporate = displayPlans.filter((p) => p.group === 'corporate')
