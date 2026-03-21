@@ -22,6 +22,7 @@ export interface PackageDTO {
   city: string;
   country: string;
   currency: string;
+  starting_price: number;
   description: string;
   duration_days: number;
   duration_nights: number;
@@ -56,4 +57,24 @@ export interface GetPackagesRequestDTO {
 export interface GetPackagesResponseDTO {
     packages: PackageDTO[]; 
     pagination: PaginationDTO;
+}
+
+export interface CreatePackageBookingRequestDTO {
+    slug: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    country?: string;
+    num_adults: number;
+    num_children?: number;
+    num_infants?: number;
+    special_requests: string;
+    // add_flights: boolean;
+}
+
+export interface CreatePackageBookingResponseDTO {
+    booking: {
+        booking_reference: string;
+    };
 }

@@ -14,6 +14,8 @@ import FooterSection from "./_components/blocks/footer-section"
 import Navbar from "./_components/blocks/navbar"
 import { Plane, Globe, Users, Building2, Map, Info, Headphones } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { FloatingActionButtons } from "./_components/floating-action-buttons"
+import { SearchTripsForm } from './_components/search-trips-form';
 
 const services = [
   {
@@ -48,10 +50,7 @@ const services = [
   }
 ]
 
-import { FloatingActionButtons } from "./_components/floating-action-buttons"
-import { SearchTripsForm } from './_components/search-trips-form';
-
-export default function SplineSceneBasic() {
+export default function HomeScreen() {
   const [activeForm, setActiveForm] = useState<'none' | 'book' | 'quote'>('none')
 
   const toggleForm = (form: 'book' | 'quote') => {
@@ -82,7 +81,7 @@ export default function SplineSceneBasic() {
               </p>
             </div>
 
-            {/* Center Buttons (Responsive) */}
+            {/* Center Buttons */}
             <div className={cn(
               "z-30 flex flex-col gap-4 items-center justify-center p-4",
               "md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2"

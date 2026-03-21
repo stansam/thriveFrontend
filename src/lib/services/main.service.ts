@@ -15,7 +15,7 @@ export const MainService = {
         return apiClient.get<{ packages: PackageDTO[] }>("/api/packages/featured");
     },
     getPackageDetails: async (slug: string) => {
-        return apiClient.get(`/api/packages/${slug}`)
+        return apiClient.get<PackageDTO>(`/api/packages/${slug}`);
     },
 
     searchLocations: async (request: typeof LocationSearchDTO) => {

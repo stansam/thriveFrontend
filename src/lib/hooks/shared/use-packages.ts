@@ -12,6 +12,7 @@ export const FALLBACK_PACKAGES: PackageDTO[] = [
     city: 'Bali',
     country: 'Indonesia',
     currency: 'USD',
+    starting_price: 1200.00,
     description: 'Experience the ultimate tropical getaway in Bali.',
     duration_days: 7,
     duration_nights: 6,
@@ -40,6 +41,7 @@ export const FALLBACK_PACKAGES: PackageDTO[] = [
     city: 'Zurich',
     country: 'Switzerland',
     currency: 'USD',
+    starting_price: 1540.00,
     description: 'Thrilling adventure in the snowy Swiss Alps.',
     duration_days: 5,
     duration_nights: 4,
@@ -68,6 +70,7 @@ export const FALLBACK_PACKAGES: PackageDTO[] = [
     city: 'Tokyo',
     country: 'Japan',
     currency: 'USD',
+    starting_price: 1890.00,
     description: 'Immerse yourself in neon-lit Tokyo.',
     duration_days: 10,
     duration_nights: 9,
@@ -92,6 +95,13 @@ export const FALLBACK_PACKAGES: PackageDTO[] = [
   }
 ];
 
+export const usePackageDetails = (slug: string) => {
+  return useQuery({
+    queryKey: ['package-details', slug],
+    queryFn: () => MainService.getPackageDetails(slug),
+    retry: 1, 
+  });
+};
 export const useFeaturedPackages = () => {
   return useQuery({
     queryKey: ['featured-packages'],
