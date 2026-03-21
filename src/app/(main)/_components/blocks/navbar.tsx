@@ -3,21 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
-import { CONTACT } from '@/lib/constants/contact.constants'
-import { cn } from '@/lib/utils'
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
 import { Button } from '@/components/ui/button'
 import { NotificationsModal } from '@/components/ui/notifications-modal'
 import { NAV_LINKS, MOCK_NOTIFICATIONS } from './_navbar/navbar.constants'
 import { MobileNav } from './_navbar/mobile-nav'
 import { NotificationBell } from './_navbar/notification-bell'
 import { UserMenu } from './_navbar/user-menu'
+import { NavbarTopStrip } from './_navbar/navbar-top-strip'
+import { DesktopNav } from './_navbar/desktop-nav'
 import type { Notification } from '@/components/ui/notifications-modal'
 
 export default function Navbar() {
@@ -40,21 +33,7 @@ export default function Navbar() {
 
     return (
         <>
-            {/* Top Strip */}
-            <div className="bg-black text-white py-2 px-4 text-xs md:text-sm font-medium border-b border-white/10 relative z-50">
-                <div className="container mx-auto flex justify-between items-center">
-                    <span className="hidden sm:inline text-white/70">Premium Travel Services</span>
-                    <div className="flex items-center gap-2">
-                        <span className="text-[#88734C] animate-pulse">Urgent flight or quote?</span>
-                        <span>
-                            WhatsApp:{' '}
-                            <a href={CONTACT.whatsappUrl} className="hover:text-[#88734C] transition-colors font-mono">
-                                {CONTACT.whatsapp}
-                            </a>
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <NavbarTopStrip />
 
             {/* Sticky Navbar */}
             <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-black/80 border-b border-white/5 transition-all duration-300">
@@ -65,22 +44,7 @@ export default function Navbar() {
                         <Link href="/" className="text-xl font-bold text-white tracking-tight">
                             THRIVE<span className="text-[#88734C]">.</span>
                         </Link>
-                        <div className="hidden md:flex">
-                            <NavigationMenu>
-                                <NavigationMenuList>
-                                    {NAV_LINKS.map((link) => (
-                                        <NavigationMenuItem key={link.href}>
-                                            <NavigationMenuLink
-                                                asChild
-                                                className={cn(navigationMenuTriggerStyle(), 'bg-transparent text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white cursor-pointer')}
-                                            >
-                                                <Link href={link.href}>{link.label}</Link>
-                                            </NavigationMenuLink>
-                                        </NavigationMenuItem>
-                                    ))}
-                                </NavigationMenuList>
-                            </NavigationMenu>
-                        </div>
+                        <DesktopNav links={NAV_LINKS} />
                     </div>
 
                     {/* Right Actions */}

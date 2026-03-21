@@ -8,6 +8,8 @@ import { SERVICES, STATS } from './_about-us/about-us.constants'
 import { ServiceItem } from './_about-us/service-item'
 import { StatCounter } from './_about-us/stat-counter'
 import { CeoPortrait } from './_about-us/ceo-portrait'
+import { AboutParallaxBackground } from './_about-us/about-parallax-background'
+import { MissionVisionCards } from './_about-us/mission-vision-cards'
 
 export default function AboutUsSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
@@ -28,19 +30,7 @@ export default function AboutUsSection() {
             ref={sectionRef}
             className="w-full py-24 px-4 bg-linear-to-b from-[#F2F2EB] to-[#F8F8F2] text-[#202e44] overflow-hidden relative"
         >
-            {/* Parallax background blobs */}
-            <motion.div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#88734C]/5 blur-3xl" style={{ y: y1, rotate: rotate1 }} />
-            <motion.div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-[#A9BBC8]/5 blur-3xl" style={{ y: y2, rotate: rotate2 }} />
-            <motion.div
-                className="absolute top-1/2 left-1/4 w-4 h-4 rounded-full bg-[#88734C]/30"
-                animate={{ y: [0, -15, 0], opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            />
-            <motion.div
-                className="absolute bottom-1/3 right-1/4 w-6 h-6 rounded-full bg-[#A9BBC8]/30"
-                animate={{ y: [0, 20, 0], opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            />
+            <AboutParallaxBackground y1={y1} y2={y2} rotate1={rotate1} rotate2={rotate2} />
 
             <div className="container mx-auto max-w-6xl relative z-10">
                 {/* Header */}
@@ -89,21 +79,7 @@ export default function AboutUsSection() {
                     ))}
                 </div>
 
-                {/* Mission & Vision */}
-                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-[#202e44] text-white p-8 rounded-xl">
-                        <h3 className="text-xl font-bold mb-3 text-[#88734C]">Our Mission</h3>
-                        <p className="text-white/80 leading-relaxed">
-                            To provide affordable, reliable, and stress‑free travel services with excellence, transparency, and world‑class service.
-                        </p>
-                    </div>
-                    <div className="bg-[#f0f0f0] text-[#202e44] p-8 rounded-xl border border-[#A9BBC8]/30">
-                        <h3 className="text-xl font-bold mb-3 text-[#88734C]">Our Vision</h3>
-                        <p className="text-[#202e44]/80 leading-relaxed">
-                            To become a recognized and trusted travel service brand known for professionalism and convenience.
-                        </p>
-                    </div>
-                </div>
+                <MissionVisionCards />
             </div>
         </section>
     )
