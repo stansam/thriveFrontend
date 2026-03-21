@@ -1,122 +1,26 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useRef, type ReactNode } from "react"
-import {
-    Plane,
-    Users,
-    Building2,
-    Map,
-    FileText,
-    Headphones,
-    CheckCircle,
-    Sparkles,
-    Star,
-    ArrowRight,
-    Zap,
-    Globe,
-    Award,
-    Clock,
-} from "lucide-react"
-import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion"
-import type { Variants } from "framer-motion"
-import Image from "next/image"
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { Zap } from 'lucide-react'
 
-// Module-level constants — static data, not recreated on each render
-const SERVICES = [
-    {
-        icon: <Plane className="w-6 h-6" />,
-        secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "Flight Booking",
-        description:
-            "Comprehensive domestic and international airline ticket booking services tailored to your schedule and budget.",
-        position: "left" as const,
-    },
-    {
-        icon: <Users className="w-6 h-6" />,
-        secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "Group Travel",
-        description:
-            "Expert coordination for families, churches, and nonprofits, ensuring seamless group travel experiences.",
-        position: "left" as const,
-    },
-    {
-        icon: <Building2 className="w-6 h-6" />,
-        secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "Corporate Travel",
-        description:
-            "Professional corporate travel planning that streamlines logistics for businesses and global travelers.",
-        position: "left" as const,
-    },
-    {
-        icon: <Map className="w-6 h-6" />,
-        secondaryIcon: <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "Itinerary Planning",
-        description:
-            "Detailed itinerary planning to maximize your trip, including optional hotel bookings and activity scheduling.",
-        position: "right" as const,
-    },
-    {
-        icon: <FileText className="w-6 h-6" />,
-        secondaryIcon: <CheckCircle className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "Travel Consultation",
-        description:
-            "Expert advice on visa rules, destination requirements, and travel regulations to keep you informed.",
-        position: "right" as const,
-    },
-    {
-        icon: <Headphones className="w-6 h-6" />,
-        secondaryIcon: <Star className="w-4 h-4 absolute -top-1 -right-1 text-[#A9BBC8]" />,
-        title: "24/7 Concierge",
-        description:
-            "Reliable 24/7 concierge support providing immediate assistance before, during, and after your journey.",
-        position: "right" as const,
-    },
-]
-
-const STATS = [
-    { icon: <Award />, value: 100, label: "Satisfaction", suffix: "%" },
-    { icon: <Globe />, value: 50, label: "Destinations", suffix: "+" },
-    { icon: <Clock />, value: 24, label: "Support Hours", suffix: "/7" },
-    { icon: <Users />, value: 500, label: "Happy Travelers", suffix: "+" },
-]
+import { SERVICES, STATS } from './_about-us/about-us.constants'
+import { ServiceItem } from './_about-us/service-item'
+import { StatCounter } from './_about-us/stat-counter'
+import { CeoPortrait } from './_about-us/ceo-portrait'
 
 export default function AboutUsSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
-    const statsRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(sectionRef, { once: false, amount: 0.1 })
 
-    // Parallax effect for decorative elements
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"],
-    })
-
+    const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
     const y1 = useTransform(scrollYProgress, [0, 1], [0, -50])
     const y2 = useTransform(scrollYProgress, [0, 1], [0, 50])
     const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 20])
     const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -20])
 
-    const containerVariants: Variants = {
-        hidden: { opacity: 1 }, // Changed to visible initially
-        visible: {
-            opacity: 1,
-            transition: {
-                // Removed stagger/delay effects
-                staggerChildren: 0,
-                delayChildren: 0,
-            },
-        },
-    }
-
-    const itemVariants: Variants = {
-        hidden: { y: 0, opacity: 1 }, // Changed to visible initially
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: { duration: 0 }, // Removed transition duration
-        },
-    }
-
+    const leftServices = SERVICES.filter((s) => s.position === 'left')
+    const rightServices = SERVICES.filter((s) => s.position === 'right')
 
     return (
         <section
@@ -124,187 +28,69 @@ export default function AboutUsSection() {
             ref={sectionRef}
             className="w-full py-24 px-4 bg-linear-to-b from-[#F2F2EB] to-[#F8F8F2] text-[#202e44] overflow-hidden relative"
         >
-            {/* Decorative background elements */}
-            <motion.div
-                className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#88734C]/5 blur-3xl"
-                style={{ y: y1, rotate: rotate1 }}
-            />
-            <motion.div
-                className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-[#A9BBC8]/5 blur-3xl"
-                style={{ y: y2, rotate: rotate2 }}
-            />
+            {/* Parallax background blobs */}
+            <motion.div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[#88734C]/5 blur-3xl" style={{ y: y1, rotate: rotate1 }} />
+            <motion.div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-[#A9BBC8]/5 blur-3xl" style={{ y: y2, rotate: rotate2 }} />
             <motion.div
                 className="absolute top-1/2 left-1/4 w-4 h-4 rounded-full bg-[#88734C]/30"
-                animate={{
-                    y: [0, -15, 0],
-                    opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                    duration: 3,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                }}
+                animate={{ y: [0, -15, 0], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.div
                 className="absolute bottom-1/3 right-1/4 w-6 h-6 rounded-full bg-[#A9BBC8]/30"
-                animate={{
-                    y: [0, 20, 0],
-                    opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                    duration: 4,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                    delay: 1,
-                }}
+                animate={{ y: [0, 20, 0], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
             />
 
-            <motion.div
-                className="container mx-auto max-w-6xl relative z-10"
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={containerVariants}
-            >
-                <motion.div className="flex flex-col items-center mb-6" variants={itemVariants}>
+            <div className="container mx-auto max-w-6xl relative z-10">
+                {/* Header */}
+                <div className="flex flex-col items-center mb-6">
                     <motion.span
                         className="text-[#88734C] font-medium mb-2 flex items-center gap-2"
                         initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <Zap className="w-4 h-4" />
-                        BUSINESS PLAN & VISION
+                        <Zap className="w-4 h-4" /> BUSINESS PLAN &amp; VISION
                     </motion.span>
-                    <h2 className="text-4xl md:text-5xl font-light mb-4 text-center">Thrive Global Travel & Tours</h2>
+                    <h2 className="text-4xl md:text-5xl font-light mb-4 text-center">Thrive Global Travel &amp; Tours</h2>
                     <motion.div
                         className="w-24 h-1 bg-[#88734C]"
                         initial={{ width: 0 }}
-                        animate={{ width: 96 }}
+                        animate={isInView ? { width: 96 } : { width: 0 }}
                         transition={{ duration: 1, delay: 0.5 }}
-                    ></motion.div>
-                </motion.div>
+                    />
+                </div>
+                <p className="text-center max-w-3xl mx-auto mb-16 text-[#202e44]/80 leading-relaxed">
+                    Thrive Global Travel &amp; Tours is a premium travel service company specializing in domestic and international
+                    flight bookings, group travel arrangements, and corporate travel management. We streamline travel by providing
+                    fast quotations, affordable service fees, and personalized customer support.
+                </p>
 
-                <motion.p className="text-center max-w-3xl mx-auto mb-16 text-[#202e44]/80 leading-relaxed" variants={itemVariants}>
-                    Thrive Global Travel & Tours is a premium travel service company specializing in domestic and international flight bookings, group travel arrangements, and corporate travel management. We streamline travel by providing fast quotations, affordable service fees, and personalized customer support.
-                </motion.p>
-
+                {/* 3-column grid — services + CEO portrait */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                    {/* Left Column */}
                     <div className="space-y-16">
-                        {SERVICES
-                            .filter((service) => service.position === "left")
-                            .map((service, index) => (
-                                <ServiceItem
-                                    key={`left-${index}`}
-                                    icon={service.icon}
-                                    secondaryIcon={service.secondaryIcon}
-                                    title={service.title}
-                                    description={service.description}
-                                    variants={itemVariants}
-                                    delay={index * 0.2}
-                                    direction="left"
-                                />
-                            ))}
+                        {leftServices.map((service) => (
+                            <ServiceItem key={service.title} {...service} direction="left" />
+                        ))}
                     </div>
-
-                    {/* Center Image */}
-                    <div className="flex justify-center items-center order-first md:order-0 mb-8 md:mb-0">
-                        <motion.div className="relative w-full max-w-xs" variants={itemVariants}>
-                            <motion.div
-                                className="rounded-md overflow-hidden shadow-xl"
-                                initial={{ scale: 1, opacity: 1 }} // Changed for static display
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ duration: 0 }}
-                                whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
-                            >
-                                <div className="relative w-full aspect-3/4">
-                                    <Image
-                                        src="/edna.jpeg"
-                                        alt="Dr. Edna Kemboi — Founder & CEO of Thrive Global Travel & Tours"
-                                        fill
-                                        className="object-cover"
-                                        sizes="(max-width: 768px) 80vw, 280px"
-                                    />
-                                </div>
-                                <motion.div
-                                    className="absolute inset-0 bg-linear-to-t from-[#202e44]/90 to-transparent flex items-end justify-center p-6 text-center"
-                                    initial={{ opacity: 1 }} // Static display
-                                    animate={{ opacity: 1 }}
-                                >
-                                    <div>
-                                        <p className="text-white font-medium text-sm mb-1">Founder & CEO</p>
-                                        <p className="text-[#88734C] font-bold text-lg">Dr. Edna Kemboi</p>
-                                    </div>
-                                </motion.div>
-                            </motion.div>
-                            <motion.div
-                                className="absolute inset-0 border-4 border-[#A9BBC8] rounded-md -m-3 z-[-1]"
-                                initial={{ opacity: 1, scale: 1 }} // Static display
-                                animate={{ opacity: 1, scale: 1 }}
-                            ></motion.div>
-
-                            {/* Floating accent elements */}
-                            <motion.div
-                                className="absolute -top-4 -right-8 w-16 h-16 rounded-full bg-[#88734C]/10"
-                                initial={{ opacity: 1, y: 0 }} // Static display
-                                animate={{ opacity: 1, y: 0 }}
-                                style={{ y: y1 }}
-                            ></motion.div>
-                            <motion.div
-                                className="absolute -bottom-6 -left-10 w-20 h-20 rounded-full bg-[#A9BBC8]/15"
-                                initial={{ opacity: 1, y: 0 }} // Static display
-                                animate={{ opacity: 1, y: 0 }}
-                                style={{ y: y2 }}
-                            ></motion.div>
-                        </motion.div>
-                    </div>
-
-                    {/* Right Column */}
+                    <CeoPortrait y1={y1} y2={y2} />
                     <div className="space-y-16">
-                        {SERVICES
-                            .filter((service) => service.position === "right")
-                            .map((service, index) => (
-                                <ServiceItem
-                                    key={`right-${index}`}
-                                    icon={service.icon}
-                                    secondaryIcon={service.secondaryIcon}
-                                    title={service.title}
-                                    description={service.description}
-                                    variants={itemVariants}
-                                    delay={index * 0.2}
-                                    direction="right"
-                                />
-                            ))}
+                        {rightServices.map((service) => (
+                            <ServiceItem key={service.title} {...service} direction="right" />
+                        ))}
                     </div>
                 </div>
 
-                {/* Stats Section */}
-                <motion.div
-                    ref={statsRef}
-                    className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-                    initial="visible"
-                    animate="visible"
-                    variants={containerVariants}
-                >
-                {STATS.map((stat, index) => (
-                        <StatCounter
-                            key={index}
-                            icon={stat.icon}
-                            value={stat.value}
-                            label={stat.label}
-                            suffix={stat.suffix}
-                            delay={0} // Removed delay
-                        />
+                {/* Stats */}
+                <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {STATS.map((stat) => (
+                        <StatCounter key={stat.label} {...stat} />
                     ))}
-                </motion.div>
+                </div>
 
-                {/* Mission & Vision Section (Replaces CTA) */}
-                <motion.div
-                    className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6"
-                    initial={{ opacity: 1, y: 0 }} // Static display
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0 }}
-                >
+                {/* Mission & Vision */}
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-[#202e44] text-white p-8 rounded-xl">
                         <h3 className="text-xl font-bold mb-3 text-[#88734C]">Our Mission</h3>
                         <p className="text-white/80 leading-relaxed">
@@ -317,113 +103,8 @@ export default function AboutUsSection() {
                             To become a recognized and trusted travel service brand known for professionalism and convenience.
                         </p>
                     </div>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
         </section>
-    )
-}
-
-
-interface ServiceItemProps {
-    icon: ReactNode
-    secondaryIcon?: ReactNode
-    title: string
-    description: string
-    variants: Variants
-    delay: number
-    direction: "left" | "right"
-}
-
-function ServiceItem({ icon, secondaryIcon, title, description, variants, delay, direction }: ServiceItemProps) {
-    return (
-        <motion.div
-            className="flex flex-col group"
-            variants={variants}
-            transition={{ delay }}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-        >
-            <motion.div
-                className="flex items-center gap-3 mb-3"
-                initial={{ x: direction === "left" ? -20 : 20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: delay + 0.2 }}
-            >
-                <motion.div
-                    className="text-[#88734C] bg-[#88734C]/10 p-3 rounded-lg transition-colors duration-300 group-hover:bg-[#88734C]/20 relative"
-                    whileHover={{ rotate: [0, -10, 10, -5, 0], transition: { duration: 0.5 } }}
-                >
-                    {icon}
-                    {secondaryIcon}
-                </motion.div>
-                <h3 className="text-xl font-medium text-[#202e44] group-hover:text-[#88734C] transition-colors duration-300">
-                    {title}
-                </h3>
-            </motion.div>
-            <motion.p
-                className="text-sm text-[#202e44]/80 leading-relaxed pl-12"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: delay + 0.4 }}
-            >
-                {description}
-            </motion.p>
-        </motion.div>
-    )
-}
-
-
-interface StatCounterProps {
-    icon: React.ReactNode
-    value: number
-    label: string
-    suffix: string
-    delay: number
-}
-
-function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
-    // ... spring logic remains for number counting ...
-    const countRef = useRef(null)
-    const isInView = useInView(countRef, { once: false })
-    const springValue = useSpring(0, {
-        stiffness: 50,
-        damping: 10,
-    })
-
-    useEffect(() => {
-        if (isInView) {
-            springValue.set(value)
-        } else {
-            springValue.set(0)
-        }
-    }, [isInView, value, springValue])
-
-    const displayValue = useTransform(springValue, (latest) => Math.floor(latest))
-
-    return (
-        <motion.div
-            className="bg-white/50 backdrop-blur-sm p-6 rounded-xl flex flex-col items-center text-center group hover:bg-white transition-colors duration-300"
-            variants={{
-                hidden: { opacity: 1, y: 0 }, // Static
-                visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0 }, // Immediate
-                },
-            }}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-        >
-            <motion.div
-                className="w-14 h-14 rounded-full bg-[#202e44]/5 flex items-center justify-center mb-4 text-[#88734C] group-hover:bg-[#88734C]/10 transition-colors duration-300"
-                whileHover={{ rotate: 360, transition: { duration: 0.8 } }}
-            >
-                {icon}
-            </motion.div>
-            <motion.div ref={countRef} className="text-3xl font-bold text-[#202e44] flex items-center">
-                <motion.span>{displayValue}</motion.span>
-                <span>{suffix}</span>
-            </motion.div>
-            <p className="text-[#202e44]/70 text-sm mt-1">{label}</p>
-            <motion.div className="w-10 h-0.5 bg-[#88734C] mt-3 group-hover:w-16 transition-all duration-300" />
-        </motion.div>
     )
 }
