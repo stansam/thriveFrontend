@@ -1,15 +1,8 @@
 'use client'
 
-import * as React from "react"
 import { ChevronRight, ChevronLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-interface PackagesPaginationProps {
-    currentPage: number
-    totalPages: number
-    isLoading: boolean
-    onPageChange: (newPage: number) => void
-}
+import { PackagesPaginationProps } from "../../_props/package-details"
 
 export function PackagesPagination({
     currentPage,

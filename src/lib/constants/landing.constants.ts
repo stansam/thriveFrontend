@@ -14,10 +14,6 @@ export interface LandingService {
   icon: LucideIcon
 }
 
-/**
- * Static services list displayed in the ServicesMarquee on the landing page.
- * This data is presentational — it does NOT come from the backend.
- */
 export const LANDING_SERVICES: LandingService[] = [
   {
     title: 'Airline Ticket Booking',

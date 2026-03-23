@@ -1,16 +1,7 @@
-/**
- * Fallback service data for the landing page ServicesMarquee.
- * Used when the /api/services backend endpoint is unreachable or returns empty.
- *
- * In development: shown on error OR empty response.
- * In production:  shown on error only; empty response shows an empty state.
- */
-
 export interface ServiceFallback {
   id: string
   title: string
   description: string
-  /** Lucide icon name string — mapped in ServicesMarquee to the actual icon */
   iconName: string
 }
 

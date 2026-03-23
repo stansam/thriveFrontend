@@ -1,13 +1,5 @@
-import * as React from "react"
 import { Loader2, MapPin, Calendar } from "lucide-react"
-import type { PackageDTO } from "@/lib/dtos/package.dto"
-
-interface SearchAutocompleteDropdownProps {
-    loading: boolean
-    query: string
-    data: PackageDTO[]
-    onSelect: (item: PackageDTO) => void
-}
+import type { SearchAutocompleteDropdownProps } from "../_props/landing/search-packages.props"
 
 export function SearchAutocompleteDropdown({
     loading,

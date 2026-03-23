@@ -1,16 +1,8 @@
 'use client'
 
-import * as React from "react"
 import { Loader2 } from "lucide-react"
-import { PackageCard } from "../package-card"
-import { PackageDTO } from "@/lib/dtos/package.dto"
-
-interface PackagesGridListProps {
-    packages: PackageDTO[]
-    isLoading: boolean
-    viewMode: 'grid' | 'list'
-    isPackageSaved: (slug: string) => boolean
-}
+import { PackageCard } from "./package-card"
+import type { PackagesGridListProps } from "../../_props/packages"
 
 export function PackagesGridList({ packages, isLoading, viewMode, isPackageSaved }: PackagesGridListProps) {
     if (isLoading) {

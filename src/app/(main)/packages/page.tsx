@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 import { Loader2 } from "lucide-react"
-import FooterSection from "../_components/blocks/footer-section"
+import FooterSection from "../_components/landing/footer-section"
 import { PackagesHeader } from "../_components/packages/packages-header"
-import { PackagesContainer } from "@/containers/PackagesContainer"
+import { PackagesContainer } from "../_containers/packages/PackagesContainer"
 
 export default function SearchResultsPage() {
     return (

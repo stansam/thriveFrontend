@@ -1,12 +1,3 @@
-/**
- * Fallback pricing data for the landing page PricingSection.
- * Displayed when:
- *   - Development: backend is unreachable, returns an error, or returns empty data.
- *   - Production: backend returns an error (empty data in prod shows an empty state instead).
- *
- * Keep this in sync with the shape returned by the /api/pricing backend endpoint.
- */
-
 export interface PricingFeature {
   text: string
 }
@@ -19,12 +10,10 @@ export interface PricingPlanFallback {
   features: string[]
   highlight?: boolean
   buttonVariant: 'outline' | 'default'
-  /** Display group heading (e.g. "Corporate Monthly Packages") */
   group: 'corporate' | 'transactional'
 }
 
 export const FALLBACK_PRICING: PricingPlanFallback[] = [
-  // ── Corporate Monthly Packages ───────────────────────────────────────────
   {
     id: 'bronze',
     title: 'Bronze',
@@ -69,7 +58,6 @@ export const FALLBACK_PRICING: PricingPlanFallback[] = [
     ],
   },
 
-  // ── Transactional Fee Structures ─────────────────────────────────────────
   {
     id: 'ticket-fees',
     title: 'Ticket Booking Fees',

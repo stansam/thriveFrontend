@@ -1,16 +1,8 @@
 'use client'
 
-import * as React from "react"
 import { LayoutGrid, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-interface PackagesContainerHeaderProps {
-    isLoading: boolean
-    totalCount: number
-    query: string
-    viewMode: 'grid' | 'list'
-    setViewMode: (mode: 'grid' | 'list') => void
-}
+import type { PackagesContainerHeaderProps } from "../../_props/packages"
 
 export function PackagesContainerHeader({ isLoading, totalCount, query, viewMode, setViewMode }: PackagesContainerHeaderProps) {
     return (

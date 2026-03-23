@@ -1,14 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
-interface PackageDetailsSidebarProps {
-    startingPrice: number;
-    durationDays: number;
-    onBookClick: () => void;
-}
+import { PackageDetailsSidebarProps } from "../../_props/package-details";
 
 export function PackageDetailsSidebar({
     startingPrice,

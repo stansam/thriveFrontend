@@ -1,13 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { MapPin, Globe } from "lucide-react";
+import { PackageDetailsOverviewProps } from "../../_props/package-details";
 
-interface PackageDetailsOverviewProps {
-    city: string;
-    country: string;
-    description: string;
-}
 
 export function PackageDetailsOverview({
     city,

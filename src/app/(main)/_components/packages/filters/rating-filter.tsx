@@ -1,14 +1,10 @@
 'use client'
 
-import * as React from "react"
 import { Star } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { RatingFilterProps } from "../../../_props/packages"
 
-interface RatingFilterProps {
-    rating: string[]
-    onRatingChange: (checked: boolean, value: string) => void
-}
 
 export function RatingFilter({ rating, onRatingChange }: RatingFilterProps) {
     return (

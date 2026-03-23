@@ -1,13 +1,10 @@
 "use client";
 
-import * as React from "react";
 import { Check } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/(main)/_components/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 import type { PackageInclusionDTO } from "@/lib/dtos/package.dto";
+import type { PackageDetailsInclusionsProps } from "../../_props/package-details";
 
-interface PackageDetailsInclusionsProps {
-    inclusions?: PackageInclusionDTO[];
-}
 
 export function PackageDetailsInclusions({ inclusions }: PackageDetailsInclusionsProps) {
     return (

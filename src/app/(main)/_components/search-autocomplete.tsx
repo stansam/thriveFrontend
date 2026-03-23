@@ -7,14 +7,7 @@ import { useRouter } from "next/navigation"
 import { PackageDTO } from "@/lib/dtos/package.dto"
 import { useAutocompleteSearch } from "@/lib/hooks/features/use-autocomplete-search"
 import { SearchAutocompleteDropdown } from "./search-autocomplete-dropdown"
-
-interface SearchAutocompleteProps {
-    className?: string
-    placeholder?: string
-    onSelect?: (value: string) => void
-    value?: string
-    onChange?: (value: string) => void
-}
+import { SearchAutocompleteProps } from "../_props/landing/search-packages.props"
 
 export function SearchAutocomplete({
     className,

@@ -22,7 +22,6 @@ export function PackagesHeader() {
 
     return (
         <React.Fragment>
-            {/* Breadcrumbs */}
             <nav className="flex text-sm text-neutral-400 font-medium mb-4">
                 <ol className="flex items-center space-x-2">
                     <li>
@@ -36,7 +35,6 @@ export function PackagesHeader() {
                 </ol>
             </nav>
 
-            {/* Top Search Bar */}
             <div className="flex flex-col gap-4 mb-4">
                 <h1 className="text-3xl font-bold">Explore Packages</h1>
                 <div className="w-full relative">

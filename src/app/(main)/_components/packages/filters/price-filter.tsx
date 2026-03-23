@@ -1,17 +1,10 @@
 'use client'
 
-import * as React from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { PriceFilterProps } from "../../../_props/packages"
 
-interface PriceFilterProps {
-    minPrice: string
-    maxPrice: string
-    onMinPriceChange: (val: string) => void
-    onMaxPriceChange: (val: string) => void
-    onPriceApply: () => void
-}
 
 export function PriceFilter({
     minPrice,

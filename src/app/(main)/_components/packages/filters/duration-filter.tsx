@@ -1,17 +1,11 @@
 'use client'
 
-import * as React from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-interface DurationFilterProps {
-    minDays: string
-    maxDays: string
-    onMinDaysChange: (val: string) => void
-    onMaxDaysChange: (val: string) => void
-    onDurationApply: () => void
-}
+import { DurationFilterProps } from "../../../_props/packages"
+
 
 export function DurationFilter({
     minDays,

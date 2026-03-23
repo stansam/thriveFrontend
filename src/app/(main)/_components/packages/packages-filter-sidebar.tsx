@@ -1,10 +1,9 @@
 'use client'
 
-import * as React from "react"
 import { Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "../seperator"
-import { PackagesFilterSidebarProps } from "@/app/(main)/_types/packages.types"
+import { PackagesFilterSidebarProps } from "../../_props/packages"
 import { PriceFilter } from "./filters/price-filter"
 import { DurationFilter } from "./filters/duration-filter"
 import { RatingFilter } from "./filters/rating-filter"

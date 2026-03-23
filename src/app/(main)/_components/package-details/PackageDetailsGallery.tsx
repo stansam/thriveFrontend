@@ -1,10 +1,7 @@
 "use client";
 
-import * as React from "react";
+import { PackageDetailsGalleryProps } from "../../_props/package-details"
 
-interface PackageDetailsGalleryProps {
-    images: string[];
-}
 
 export function PackageDetailsGallery({ images }: PackageDetailsGalleryProps) {
     if (images.length <= 1) return null;

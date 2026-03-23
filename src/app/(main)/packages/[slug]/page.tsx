@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getPackageDetailsCached } from "./data"; 
-import { PackageDetailsContainer } from "@/containers/PackageDetailsContainer";
+import { PackageDetailsContainer } from "../../_containers/package-details/PackageDetailsContainer";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const slug = (await params).slug;
