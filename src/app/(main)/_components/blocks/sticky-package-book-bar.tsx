@@ -27,7 +27,7 @@ export function StickyBookBar({ pkg, className }: StickyBookBarProps) {
                     <div className="flex flex-col">
                         <span className="text-xs text-neutral-400 uppercase tracking-wider">Starting From</span>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-bold text-white">${pkg.starting_price.toLocaleString()}</span>
+                            <span className="text-xl font-bold text-white">${pkg.starting_price}</span>
                             <span className="text-xs text-neutral-400">/ person</span>
                         </div>
                     </div>

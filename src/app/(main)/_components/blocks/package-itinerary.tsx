@@ -51,7 +51,7 @@ export function PackageItinerary({ itinerary }: PackageItineraryProps) {
                         <AccordionContent className="pb-6">
                             <div className="pl-20 pr-4 text-neutral-300 leading-relaxed space-y-4">
                                 <p>{item.description}</p>
-                                <p> <MapPin className="w-4 h-4" /> {item.location}</p>
+                                <p className="flex items-center flex-row gap-1 justify-end"> <MapPin className="w-4 h-4 text-emerald-500" /> {item.location}</p>
 
                                 {/* Future: Can add structured meal/activity icons here if data supported it */}
                                 {/* Sample structured data visualization */}

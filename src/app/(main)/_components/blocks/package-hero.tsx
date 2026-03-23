@@ -118,7 +118,7 @@ export function PackageHero({
                             </p>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-4xl md:text-5xl font-bold text-white">
-                                    ${startingPrice.toLocaleString()}
+                                    ${startingPrice}
                                 </span>
                                 <span className="text-neutral-400 text-lg">/ person</span>
                             </div>

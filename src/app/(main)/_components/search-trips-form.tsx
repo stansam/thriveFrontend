@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import { SearchAutocomplete } from "../_components/search-autocomplete"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
-import { SearchTripsFormProps } from "../props/package.props"
+import { SearchTripsFormProps } from "../_props/package.props"
 
 export function SearchTripsForm({ className }: SearchTripsFormProps) {
     const router = useRouter()

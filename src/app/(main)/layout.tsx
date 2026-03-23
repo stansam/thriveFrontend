@@ -7,6 +7,7 @@ import { AppProviders } from '@/lib/providers/app-providers'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import '../globals.css'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: {
@@ -37,12 +38,14 @@ export default function MainLayout({
   return (
     <html lang="en">
       <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <Suspense fallback={<div>Loading...</div>}>
         <AppProviders>
           <TooltipProvider>
             {children}
             <Toaster />
           </TooltipProvider>
         </AppProviders>
+        </Suspense>
         <Script
           src="https://accounts.google.com/gsi/client"
           strategy="afterInteractive"
