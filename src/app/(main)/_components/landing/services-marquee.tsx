@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { ServiceCard } from "@/components/ui/service-card"
+import { ServiceCard } from "@/app/(main)/_components/landing/service-card"
 import { ServicesMarqueeProps } from "../../_props/landing/services.props"
 
 export function ServicesMarquee({

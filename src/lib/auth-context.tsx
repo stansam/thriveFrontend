@@ -75,8 +75,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setIsAuthenticated(false);
       setLoading(false);
-      // Optional: Since middleware handles protected routing, 
-      // a hard reload or redirect to '/' might be useful here depending on UX needs.
       window.location.href = "/";
     }
   };

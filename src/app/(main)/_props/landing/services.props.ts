@@ -10,3 +10,10 @@ export interface ServicesMarqueeProps {
     }>
     className?: string
 }
+
+export interface ServiceCardProps {
+    title: string
+    description: string
+    icon: LucideIcon
+    className?: string
+}

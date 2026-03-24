@@ -7,7 +7,6 @@ import { Plane, Users, Building2, Map, Info, Headphones } from 'lucide-react'
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 
-/** Maps backend icon-name strings → Lucide icon components */
 const ICON_MAP: Record<string, LucideIcon> = {
   Plane,
   Users,
@@ -17,13 +16,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Headphones,
 }
 
-/**
- * Fetches travel services from the backend and maps them to LandingService shape.
- *
- * Fallback strategy:
- *   - Development: shows LANDING_SERVICES on error OR if backend returns empty.
- *   - Production:  shows LANDING_SERVICES on error only; empty response → empty state.
- */
 export function useServices() {
   return useQuery<LandingService[]>({
     queryKey: ['landing-services'],
@@ -44,7 +36,7 @@ export function useServices() {
       return mapped.length > 0 ? mapped : IS_DEV ? LANDING_SERVICES : []
     },
     retry: 1,
-    staleTime: 1000 * 60 * 60, // 1 hour — services are fairly static
+    staleTime: 1000 * 60 * 60, // 1 hour 
     placeholderData: IS_DEV ? LANDING_SERVICES : undefined,
   })
 }

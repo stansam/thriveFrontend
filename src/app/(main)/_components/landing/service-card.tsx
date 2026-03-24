@@ -1,12 +1,6 @@
 import { cn } from "@/lib/utils"
-import { LucideIcon } from "lucide-react"
+import { ServiceCardProps } from "@/app/(main)/_props/landing/services.props"
 
-export interface ServiceCardProps {
-    title: string
-    description: string
-    icon: LucideIcon
-    className?: string
-}
 
 export function ServiceCard({
     title,
@@ -18,7 +12,7 @@ export function ServiceCard({
         <div
             className={cn(
                 "flex flex-col rounded-lg border-t",
-                "bg-gradient-to-b from-neutral-800/80 to-neutral-900/40 backdrop-blur-sm",
+                "bg-linear-to-b from-neutral-800/80 to-neutral-900/40 backdrop-blur-sm",
                 "p-6 text-start",
                 "hover:from-neutral-800 hover:to-neutral-900/60",
                 "w-[300px] shrink-0 border-white/10",

@@ -1,8 +1,3 @@
-/**
- * A robust fetch wrapper for handling API requests securely.
- * It routes requests through the Next.js rewrites (/api/) to securely handle Flask-Login cookies.
- */
-
 interface ApiOptions extends RequestInit {
   data?: any;
   params?: Record<string, string | number | boolean | undefined>;
@@ -30,7 +25,6 @@ async function request<T>(endpoint: string, options: ApiOptions = {}): Promise<T
     origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   }
 
-  // Ensure endpoint is relative or absolute correctly
   const path = endpoint.startsWith('http') ? endpoint : `${origin}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
   const url = new URL(path);
 

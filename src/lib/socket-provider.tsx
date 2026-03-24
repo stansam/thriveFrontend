@@ -22,14 +22,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // The backend URL is retrieved from the environment or default local Flask server
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
-    // Establish direct connection to backend
-    // withCredentials ensures cookies (like flask-login's "session" cookie) are sent over WebSockets
     const socketInstance = io(backendUrl, {
       withCredentials: true,
-      transports: ['websocket', 'polling'], // Fallback to polling if websocket fails
+      transports: ['websocket', 'polling'],
       reconnectionAttempts: 5,
     });
 
