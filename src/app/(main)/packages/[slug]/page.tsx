@@ -20,8 +20,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PackageDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
-    // Validate data server-side — missing packages trigger the not-found boundary.
-    // Render errors are caught by the route segment's error.tsx boundary.
     const pkg = await getPackageDetailsCached(slug).catch(() => null);
     if (!pkg) notFound();
     return <PackageDetailsContainer slug={slug} />;

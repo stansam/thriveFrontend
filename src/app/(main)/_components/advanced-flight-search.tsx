@@ -21,7 +21,8 @@ import {
 import { flightService, type LocationResult } from '@/lib/services/flight-service';
 import { useDebounce } from '@/lib/hooks/shared/use-debounce';
 import { cn } from '@/lib/utils';
-import DataTableFilter, { type FilterOption } from '@/components/ui/data-table-filter';
+import DataTableFilter from '@/components/ui/data-table-filter';
+import type { FilterOption } from '@/lib/types/data-table-filter';
 import {
     Popover,
     PopoverContent,

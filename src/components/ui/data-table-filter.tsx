@@ -1,11 +1,5 @@
-import React, { type ElementType } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-export interface FilterOption {
-  label: string;
-  value: string;
-  icon?: ElementType;
-}
+import type {FilterOption} from '@/lib/types/data-table-filter'
 
 interface DataTableFilterProps {
     title?: string;
