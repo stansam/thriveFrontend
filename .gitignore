@@ -41,3 +41,5 @@ yarn-error.log*
 .agent/
 next-env.d.ts
 TODO
+featured-packages.json
+packages.json
