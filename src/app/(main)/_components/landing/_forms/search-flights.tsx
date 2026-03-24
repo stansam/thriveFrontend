@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 
@@ -28,10 +28,10 @@ export function SearchFlightsForm({ className }: SearchFlightsFormProps) {
         resolver: zodResolver(SearchFlightsFormSchema),
         defaultValues: { tripType: 'round-trip', adults: 1, children: 0, cabinClass: 'ECONOMY' },
     })
-    const { watch, setValue, control, handleSubmit } = form
-    const tripType = watch('tripType')
-    const adults = watch('adults')
-    const children = watch('children')
+    const { setValue, control, handleSubmit } = form
+    const tripType = useWatch({ control, name: 'tripType' })
+    const adults = useWatch({ control, name: 'adults' })
+    const children = useWatch({ control, name: 'children' })
 
     const origin = useLocationSearch({ field: 'from', setValue })
     const destination = useLocationSearch({ field: 'to', setValue })

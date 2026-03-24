@@ -33,6 +33,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     socketInstance.on('connect', () => {
       console.log('Socket connected successfully to Flask backend');
       setIsConnected(true);
+      setSocket(socketInstance);
     });
 
     socketInstance.on('disconnect', () => {
@@ -43,9 +44,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     socketInstance.on('connect_error', (err) => {
       console.error('Socket connection error:', err);
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    setSocket(socketInstance);
 
     return () => {
       socketInstance.disconnect();

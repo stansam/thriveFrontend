@@ -1,13 +1,13 @@
 interface ApiOptions extends RequestInit {
-  data?: any;
+  data?: unknown;
   params?: Record<string, string | number | boolean | undefined>;
 }
 
 export class ApiError extends Error {
   status: number;
-  data: any;
-  
-  constructor(status: number, data: any, message: string) {
+  data: unknown;
+
+  constructor(status: number, data: unknown, message: string) {
     super(message);
     this.status = status;
     this.data = data;
@@ -53,7 +53,7 @@ async function request<T>(endpoint: string, options: ApiOptions = {}): Promise<T
   let responseData;
   try {
     responseData = await response.json();
-  } catch (error) {
+  } catch {
     responseData = null;
   }
 
@@ -71,11 +71,11 @@ async function request<T>(endpoint: string, options: ApiOptions = {}): Promise<T
 export const apiClient = {
   get: <T>(endpoint: string, options?: Omit<ApiOptions, 'method' | 'data'>) =>
     request<T>(endpoint, { ...options, method: 'GET' }),
-  post: <T>(endpoint: string, data?: any, options?: Omit<ApiOptions, 'method' | 'data'>) =>
+  post: <T>(endpoint: string, data?: unknown, options?: Omit<ApiOptions, 'method' | 'data'>) =>
     request<T>(endpoint, { ...options, method: 'POST', data }),
-  put: <T>(endpoint: string, data?: any, options?: Omit<ApiOptions, 'method' | 'data'>) =>
+  put: <T>(endpoint: string, data?: unknown, options?: Omit<ApiOptions, 'method' | 'data'>) =>
     request<T>(endpoint, { ...options, method: 'PUT', data }),
-  patch: <T>(endpoint: string, data?: any, options?: Omit<ApiOptions, 'method' | 'data'>) =>
+  patch: <T>(endpoint: string, data?: unknown, options?: Omit<ApiOptions, 'method' | 'data'>) =>
     request<T>(endpoint, { ...options, method: 'PATCH', data }),
   delete: <T>(endpoint: string, options?: Omit<ApiOptions, 'method' | 'data'>) =>
     request<T>(endpoint, { ...options, method: 'DELETE' }),

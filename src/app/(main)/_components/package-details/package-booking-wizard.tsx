@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type FieldPath } from "react-hook-form";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, CheckCircle2, Loader2, Plane, Users, X } from "lucide-react";
+import { CalendarIcon, CheckCircle2, Loader2, Plane } from "lucide-react";
 import { useBooking } from "@/lib/hooks/client/use-booking";
 
 import { cn } from "@/lib/utils";
@@ -16,7 +16,6 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogDescription
 } from "@/components/ui/dialog";
 import {
     Form,
@@ -48,7 +47,6 @@ export function BookingWizard({ pkg, open, onOpenChange }: PackageBookingWizardP
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [bookingRef, setBookingRef] = React.useState("");
 
-    const router = useRouter();
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof PackageBookingSchema>>({
@@ -95,12 +93,13 @@ export function BookingWizard({ pkg, open, onOpenChange }: PackageBookingWizardP
                     description: "We have received your booking request.",
                 });
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Booking error:", error);
+            const message = error instanceof Error ? error.message : "Please check your network connection.";
             toast({
                 variant: "destructive",
                 title: "Submission Failed",
-                description: error.message || "Please check your network connection."
+                description: message,
             });
         } finally {
             setIsSubmitting(false);
@@ -108,7 +107,7 @@ export function BookingWizard({ pkg, open, onOpenChange }: PackageBookingWizardP
     };
 
     const nextStep = async () => {
-        let fieldsToValidate: any[] = [];
+        let fieldsToValidate: FieldPath<z.infer<typeof PackageBookingSchema>>[] = [];
         if (step === 1) fieldsToValidate = ['firstName', 'lastName', 'email', 'phone', 'country'];
         if (step === 2) fieldsToValidate = ['startDate', 'numAdults', 'numChildren'];
 

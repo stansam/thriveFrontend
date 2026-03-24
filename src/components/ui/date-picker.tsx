@@ -21,7 +21,7 @@ interface DatePickerProps {
     placeholder?: string
 }
 
-export function DatePicker({ date, setDate, defaultDate, className, placeholder = "Pick a date" }: DatePickerProps) {
+export function DatePicker({ date, setDate, defaultDate, className }: DatePickerProps) {
     // Initialize state from props
     const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(date || defaultDate);
 
