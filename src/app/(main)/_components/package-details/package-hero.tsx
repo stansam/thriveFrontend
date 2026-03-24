@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Phone, MessageCircle } from "lucide-react";
 import {

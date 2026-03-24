@@ -7,8 +7,6 @@ import { HomeHeroContent } from './_home-hero/home-hero-content'
 import { HomeHeroButtons } from './_home-hero/home-hero-buttons'
 import { HomeHeroVisuals } from './_home-hero/home-hero-visuals'
 
-
-
 export function HomeHeroView({ activeForm, onToggleForm }: HomeHeroViewProps) {
   return (
     <section className="flex items-center justify-center p-4 min-h-screen">

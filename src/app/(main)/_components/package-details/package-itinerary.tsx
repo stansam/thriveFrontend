@@ -6,7 +6,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import { MapPin, CalendarDays, Coffee, Moon } from "lucide-react";
+import { MapPin, CalendarDays } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PackageItineraryProps } from "../../_props/package-details";
 

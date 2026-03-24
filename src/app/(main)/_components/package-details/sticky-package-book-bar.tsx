@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { BookingInquiryModal } from "./package-booking-inquiry";
+import { PackageBookingInquiryModal } from "./package-booking-inquiry";
 import { cn } from "@/lib/utils";
 
 import { StickyBookBarProps } from "../../_props/package-details";
@@ -34,7 +34,7 @@ export function StickyBookBar({ pkg, className }: StickyBookBarProps) {
                 </div>
             </div>
 
-            <BookingInquiryModal
+            <PackageBookingInquiryModal
                 pkg={pkg}
                 open={open}
                 onOpenChange={setOpen}

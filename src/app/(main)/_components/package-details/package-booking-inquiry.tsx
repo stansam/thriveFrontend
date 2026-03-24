@@ -25,25 +25,16 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface BookingInquiryModalProps {
-    pkg: {
-        id: string;
-        name: string;
-        starting_price: number;
-    };
-    trigger?: React.ReactNode;
-    open?: boolean;
-    onOpenChange?: (open: boolean) => void;
-}
+import { PackageBookingInquiryModalProps } from "../../_props/package-details"
 
-export function BookingInquiryModal({ pkg, trigger, open: controlledOpen, onOpenChange: setControlledOpen }: BookingInquiryModalProps) {
+
+export function PackageBookingInquiryModal({ pkg, trigger, open: controlledOpen, onOpenChange: setControlledOpen }: PackageBookingInquiryModalProps) {
     const [open, setOpen] = React.useState(false);
     const [date, setDate] = React.useState<Date>();
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [isSuccess, setIsSuccess] = React.useState(false);
     const { toast } = useToast();
 
-    // Handle controlled vs uncontrolled state
     const isControlled = controlledOpen !== undefined;
     const isOpen = isControlled ? controlledOpen : open;
     const onOpenChange = isControlled ? setControlledOpen : setOpen;
@@ -52,7 +43,6 @@ export function BookingInquiryModal({ pkg, trigger, open: controlledOpen, onOpen
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Simulate API call
         setTimeout(() => {
             setIsSubmitting(false);
             setIsSuccess(true);

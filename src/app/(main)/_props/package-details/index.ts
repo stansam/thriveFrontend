@@ -60,3 +60,14 @@ export interface StickyBookBarProps {
     };
     className?: string;
 }
+
+export interface PackageBookingInquiryModalProps {
+    pkg: {
+        id: string;
+        name: string;
+        starting_price: number;
+    };
+    trigger?: React.ReactNode;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+}
