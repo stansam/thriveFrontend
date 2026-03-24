@@ -2,16 +2,12 @@
 
 import { Spotlight } from './spotlight'
 import { Card } from '@/components/ui/card'
-import type { ActiveForm } from '../../_types/home.types'
-
+import type { HomeHeroViewProps } from '../../_props/landing/home-hero.props'
 import { HomeHeroContent } from './_home-hero/home-hero-content'
 import { HomeHeroButtons } from './_home-hero/home-hero-buttons'
 import { HomeHeroVisuals } from './_home-hero/home-hero-visuals'
 
-interface HomeHeroViewProps {
-  activeForm: ActiveForm
-  onToggleForm: (form: 'book' | 'quote') => void
-}
+
 
 export function HomeHeroView({ activeForm, onToggleForm }: HomeHeroViewProps) {
   return (

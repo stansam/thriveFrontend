@@ -5,8 +5,13 @@ export interface HomeHeroButtonsProps {
     onToggleForm: (form: 'book' | 'quote') => void
 }
 
+export interface HomeHeroViewProps {
+    activeForm: ActiveForm
+    onToggleForm: (form: 'book' | 'quote') => void
+}
+
 export interface HomeHeroVisualsProps {
-  activeForm: ActiveForm
+    activeForm: ActiveForm
 }
 
 export interface SpotlightProps {
