@@ -38,4 +38,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+.agent/
 next-env.d.ts
+TODO
+featured-packages.json
+packages.json
