@@ -29,12 +29,9 @@ export default function DataTableFilter({
     isMultiSelect = false, 
     className 
 }: DataTableFilterProps) {
-    
-    // For simplicity in mocked version, we just render a simple select
-    // It will return the first item or comma-separated if we want to hack multi-select via a normal select temporarily
+
     const handleChange = (val: string) => {
         if (isMultiSelect && onValuesChange) {
-            // Simulated toggle
             const newValues = selectedValues.includes(val) 
                 ? selectedValues.filter(v => v !== val)
                 : [...selectedValues, val];

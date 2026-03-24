@@ -3,12 +3,7 @@ import { Heart, Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useTogglePackageSave } from "@/lib/hooks/shared/use-packages"
-
-interface WishlistButtonProps {
-    packageSlug: string
-    isSaved?: boolean
-    className?: string
-}
+import { WishlistButtonProps } from "@/lib/props/feature/wishlist.props"
 
 export function WishlistButton({ packageSlug, isSaved = false, className }: WishlistButtonProps) {
     const [optimisticSaved, setOptimisticSaved] = useState(isSaved)
