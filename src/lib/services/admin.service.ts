@@ -1,10 +1,11 @@
-import { apiClient } from "../api-client";
+import type { AdminDashboardStats, AdminUser } from '../types/admin.types';
+import { apiClient } from '../api-client';
 
 export const adminService = {
   getDashboardStats: async () => {
-    return apiClient.get<any>("/api/admin/stats");
+    return apiClient.get<AdminDashboardStats>('/api/admin/stats');
   },
   getSystemUsers: async () => {
-    return apiClient.get<any[]>("/api/admin/users");
+    return apiClient.get<AdminUser[]>('/api/admin/users');
   },
 };

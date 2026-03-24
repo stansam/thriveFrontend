@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Phone, MessageCircle } from "lucide-react";
 import {
@@ -28,8 +29,6 @@ export function PackageHero({
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
     );
-
-    const [isSaved, setIsSaved] = React.useState(false);
     
     const displayImages = images.length > 0
         ? images
@@ -49,10 +48,13 @@ export function PackageHero({
                     {displayImages.map((img, index) => (
                         <CarouselItem key={index} className="h-full w-full pl-0">
                             <div className="relative w-full h-full">
-                                <img
+                                <Image
                                     src={img}
                                     alt={`${title} - Image ${index + 1}`}
-                                    className="object-cover w-full h-full opacity-90"
+                                    fill
+                                    className="object-cover opacity-90"
+                                    sizes="(max-width: 768px) 100vw, 100vw"
+                                    priority={index === 0}
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-90" />
                                 <div className="absolute inset-0 bg-linear-to-r from-black/60 to-transparent" />
@@ -71,7 +73,6 @@ export function PackageHero({
                 <div className="absolute top-24 right-4 md:right-8 z-30">
                     <WishlistButton
                         packageSlug={packageSlug}
-                        isSaved={isSaved}
                         className="bg-black/40 hover:bg-black/60 text-white border-white/20 backdrop-blur-md"
                     />
                 </div>

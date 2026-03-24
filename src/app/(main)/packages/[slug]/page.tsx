@@ -1,5 +1,6 @@
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getPackageDetailsCached } from "./data"; 
+import { getPackageDetailsCached } from "./data";
 import { PackageDetailsContainer } from "../../_containers/package-details/PackageDetailsContainer";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -19,9 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PackageDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
-    try{
-        return <PackageDetailsContainer slug={slug} />;
-    } catch{
-        return <div>Failed to load package</div>;
-    }
+    const pkg = await getPackageDetailsCached(slug).catch(() => null);
+    if (!pkg) notFound();
+    return <PackageDetailsContainer slug={slug} />;
 }

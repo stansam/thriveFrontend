@@ -9,7 +9,7 @@ export function PricingSection() {
                         Transparent Pricing
                     </h2>
                     <p className="text-muted-foreground text-lg">
-                        Choose the perfect plan for your travel needs. Whether you're an individual, a group, or a corporation, we have you covered.
+                        Choose the perfect plan for your travel needs. Whether you&apos;re an individual, a group, or a corporation, we have you covered.
                     </p>
                 </div>
 

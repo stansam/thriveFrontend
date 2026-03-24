@@ -1,62 +1,57 @@
 'use client';
 
 import * as React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
     MapPin,
-    Calendar as CalendarIcon,
     Users,
     Search,
     ChevronDown,
     ChevronUp,
     Filter,
     Plane,
-    Briefcase,
-    Armchair,
     DollarSign,
     Clock,
     Ban,
-    Building // Added Building
+    Building,
 } from 'lucide-react';
-import { flightService } from '@/lib/services/flight-service';
+import { flightService, type LocationResult } from '@/lib/services/flight-service';
 import { useDebounce } from '@/lib/hooks/shared/use-debounce';
 import { cn } from '@/lib/utils';
-import DataTableFilter, { FilterOption } from '@/components/ui/data-table-filter';
+import DataTableFilter from '@/components/ui/data-table-filter';
+import type { FilterOption } from '@/lib/types/data-table-filter';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/popover';
 import { DatePicker } from '@/components/ui/date-picker';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
-// --- Options for Filters ---
-const CabinOptions: FilterOption[] = [
-    { value: 'ECONOMY', label: 'Economy', icon: Armchair },
-    { value: 'PREMIUM_ECONOMY', label: 'Premium Econ', icon: Armchair },
-    { value: 'BUSINESS', label: 'Business', icon: Briefcase },
-    { value: 'FIRST', label: 'First', icon: Briefcase },
-];
+
+type TripType = 'round-trip' | 'one-way';
+
+function isTripType(val: string): val is TripType {
+    return val === 'round-trip' || val === 'one-way';
+}
+
+// ─── Filter Options ──────────────────────────────────────────────────────────
 
 const StopsOptions: FilterOption[] = [
     { value: 'DIRECT', label: 'Non-stop', icon: Ban },
     { value: '1', label: '1 Stop', icon: Clock },
     { value: '2+', label: '2+ Stops', icon: Clock },
 ];
-
-
-import { useRouter, useSearchParams } from 'next/navigation';
-
-// ... (keep imports)
 
 export function AdvancedFlightSearch({ className }: { className?: string }) {
     const router = useRouter();
@@ -78,8 +73,8 @@ export function AdvancedFlightSearch({ className }: { className?: string }) {
     const [includedAirlines, setIncludedAirlines] = React.useState('');
 
     // Search State
-    const [originResults, setOriginResults] = React.useState<any[]>([]);
-    const [destResults, setDestResults] = React.useState<any[]>([]);
+    const [originResults, setOriginResults] = React.useState<LocationResult[]>([]);
+    const [destResults, setDestResults] = React.useState<LocationResult[]>([]);
     const [isSearchingOrigin, setIsSearchingOrigin] = React.useState(false);
     const [isSearchingDest, setIsSearchingDest] = React.useState(false);
 
@@ -140,7 +135,7 @@ export function AdvancedFlightSearch({ className }: { className?: string }) {
         searchDest();
     }, [debouncedDest]);
 
-    const handleSelectLocation = (location: any, type: 'origin' | 'destination') => {
+    const handleSelectLocation = (location: LocationResult, type: 'origin' | 'destination') => {
         const displayValue = `${location.name} (${location.iataCode})`;
         if (type === 'origin') {
             setOrigin(displayValue);
@@ -221,7 +216,7 @@ export function AdvancedFlightSearch({ className }: { className?: string }) {
             <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 transition-all duration-300">
                 {/* Trip Type Radio */}
                 <div className="mb-4">
-                    <RadioGroup value={tripType} onValueChange={(val: any) => setTripType(val)} className="flex gap-4">
+                    <RadioGroup value={tripType} onValueChange={(val: string) => { if (isTripType(val)) setTripType(val); }} className="flex gap-4">
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="round-trip" id="adv-round-trip" className="border-white text-white" />
                             <Label htmlFor="adv-round-trip" className="text-white cursor-pointer">Round Trip</Label>
