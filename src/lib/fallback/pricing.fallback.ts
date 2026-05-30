@@ -1,90 +1,76 @@
-export interface PricingFeature {
-  text: string
-}
+import type { PricingPlanDTO } from "@/lib/dtos/pricing.dto";
 
-export interface PricingPlanFallback {
-  id: string
-  title: string
-  price: string
-  description: string
-  features: string[]
-  highlight?: boolean
-  buttonVariant: 'outline' | 'default'
-  group: 'corporate' | 'transactional'
-}
-
-export const FALLBACK_PRICING: PricingPlanFallback[] = [
+export const FALLBACK_PRICING: PricingPlanDTO[] = [
   {
-    id: 'bronze',
-    title: 'Bronze',
-    price: '$150 / mo',
-    description: 'Essential for small teams.',
-    buttonVariant: 'outline',
-    group: 'corporate',
+    id: "bronze",
+    title: "Bronze",
+    price: "$150 / mo",
+    description: "Essential for small teams.",
+    button_variant: "outline",
+    group: "corporate",
     features: [
-      'Up to 6 bookings per month',
-      'Standard support',
-      'Monthly reporting',
+      "Up to 6 bookings per month",
+      "Standard support",
+      "Monthly reporting",
     ],
   },
   {
-    id: 'silver',
-    title: 'Silver',
-    price: '$300 / mo',
-    description: 'Perfect for growing businesses.',
-    buttonVariant: 'outline',
-    group: 'corporate',
+    id: "silver",
+    title: "Silver",
+    price: "$300 / mo",
+    description: "Perfect for growing businesses.",
+    button_variant: "outline",
+    group: "corporate",
     features: [
-      'Up to 15 bookings per month',
-      'Priority support',
-      'Dedicated account manager',
-      'Expense integration',
+      "Up to 15 bookings per month",
+      "Priority support",
+      "Dedicated account manager",
+      "Expense integration",
     ],
   },
   {
-    id: 'gold',
-    title: 'Gold',
-    price: '$500 / mo',
-    description: 'Ultimate solution for large enterprises.',
-    buttonVariant: 'default',
+    id: "gold",
+    title: "Gold",
+    price: "$500 / mo",
+    description: "Ultimate solution for large enterprises.",
+    button_variant: "default",
     highlight: true,
-    group: 'corporate',
+    group: "corporate",
     features: [
-      'Unlimited bookings',
-      '24/7 Concierge Support',
-      'Custom travel policies',
-      'VIP Lounge Access coordination',
-      'Quarterly business reviews',
-    ],
-  },
-
-  {
-    id: 'ticket-fees',
-    title: 'Ticket Booking Fees',
-    price: 'Pay as you go',
-    description: 'Standard service fees per transaction.',
-    buttonVariant: 'outline',
-    group: 'transactional',
-    features: [
-      'Domestic Flights: $25–$50 per ticket',
-      'International Flights: $50–$100 per ticket',
-      'Last-Minute Emergency Booking: +$25',
-      'Group Bookings: $15 per traveler (min 5)',
+      "Unlimited bookings",
+      "24/7 Concierge Support",
+      "Custom travel policies",
+      "VIP Lounge Access coordination",
+      "Quarterly business reviews",
     ],
   },
   {
-    id: 'additional-services',
-    title: 'Additional Services',
-    price: 'Add-ons',
-    description: 'Enhance your trip with customized extras.',
-    buttonVariant: 'outline',
-    group: 'transactional',
+    id: "ticket-fees",
+    title: "Ticket Booking Fees",
+    price: "Pay as you go",
+    description: "Standard service fees per transaction.",
+    button_variant: "outline",
+    group: "transactional",
     features: [
-      'Hotel booking fee: $20 per booking',
-      'Car rental booking fee: $15',
-      'Customized itineraries: $50–$150',
-      'Travel insurance commissions',
-      'Passport/visa information consulting',
+      "Domestic Flights: $25–$50 per ticket",
+      "International Flights: $50–$100 per ticket",
+      "Last-Minute Emergency Booking: +$25",
+      "Group Bookings: $15 per traveler (min 5)",
     ],
   },
-]
+  {
+    id: "additional-services",
+    title: "Additional Services",
+    price: "Add-ons",
+    description: "Enhance your trip with customized extras.",
+    button_variant: "outline",
+    group: "transactional",
+    features: [
+      "Hotel booking fee: $20 per booking",
+      "Car rental booking fee: $15",
+      "Customized itineraries: $50–$150",
+      "Travel insurance commissions",
+      "Passport/visa information consulting",
+    ],
+  },
+];

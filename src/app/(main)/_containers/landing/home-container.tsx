@@ -1,20 +1,10 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { HomeHeroView } from '../../_components/landing/home-hero-view'
-import type { ActiveForm } from '../../_types/home.types'
+import { useHomeHero } from "@/lib/hooks/features/use-home-hero";
+import { HomeHeroView } from "../../_components/landing/home-hero-view";
 
 export function HomeContainer() {
-  const [activeForm, setActiveForm] = useState<ActiveForm>('none')
+  const { activeForm, toggleForm } = useHomeHero();
 
-  const toggleForm = (form: 'book' | 'quote') => {
-    setActiveForm((curr) => (curr === form ? 'none' : form))
-  }
-
-  return (
-    <HomeHeroView 
-      activeForm={activeForm} 
-      onToggleForm={toggleForm} 
-    />
-  )
+  return <HomeHeroView activeForm={activeForm} onToggleForm={toggleForm} />;
 }

@@ -1,21 +1,41 @@
+import { z } from "zod";
 import { apiClient } from "../api-client";
-import { PackageDTO, CreatePackageBookingRequestDTO, CreatePackageBookingResponseDTO } from "../dtos/package.dto";
+import {
+  PackageDTOSchema,
+  type PackageDTO,
+  type CreatePackageBookingRequestDTO,
+  type CreatePackageBookingResponseDTO,
+} from "../dtos/package.dto";
+import { BookingDTOSchema, type BookingDTO } from "../types/booking.dto";
+import { ClientProfileDTOSchema, type ClientProfileDTO } from "../types/client-profile.dto";
 
 export const clientService = {
-  getMyBookings: async () => {
-    return apiClient.get<unknown[]>("/api/client/bookings");
-  },
-  getProfile: async () => {
-    return apiClient.get<unknown>("/api/client/profile");
-  },
-  getSavedPackages: async () => {
-    return apiClient.get<PackageDTO[]>("/api/client/wishlist");
-  },
-  toggleSavedPackage: async (slug: string) => {
-    return apiClient.post<unknown>("/api/client/wishlist/toggle", { slug });
+  getMyBookings: async (): Promise<BookingDTO[]> => {
+    const raw = await apiClient.get("/api/client/bookings");
+    const result = z.array(BookingDTOSchema).safeParse(raw);
+    return result.success ? result.data : [];
   },
 
-  createPackageBooking: async (bookingData: CreatePackageBookingRequestDTO) => {
-    return apiClient.post<CreatePackageBookingResponseDTO>("/api/client/packages/booking", bookingData);
-  }
+  getProfile: async (): Promise<ClientProfileDTO> => {
+    const raw = await apiClient.get("/api/client/profile");
+    return ClientProfileDTOSchema.parse(raw);
+  },
+
+  getSavedPackages: async (): Promise<PackageDTO[]> => {
+    const raw = await apiClient.get("/api/client/wishlist");
+    const result = z.array(PackageDTOSchema).safeParse(raw);
+    return result.success ? result.data : [];
+  },
+
+  toggleSavedPackage: async (slug: string): Promise<{ saved: boolean }> => {
+    const raw = await apiClient.post("/api/client/wishlist/toggle", { slug });
+    return z.object({ saved: z.boolean() }).parse(raw);
+  },
+
+  createPackageBooking: async (
+    bookingData: CreatePackageBookingRequestDTO
+  ): Promise<CreatePackageBookingResponseDTO> => {
+    return apiClient.post("/api/client/packages/booking", bookingData);
+  },
 };
+export type ClientService = typeof clientService;

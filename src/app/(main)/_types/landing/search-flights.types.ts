@@ -10,6 +10,10 @@ export const LocationResultSchema = z.object({
 
 export type LocationResult = z.infer<typeof LocationResultSchema>
 
+export const LocationSearchResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.array(LocationResultSchema),
+});
 
 export const SearchFlightsFormSchema = z.object({
   tripType: z.enum(['round-trip', 'one-way']),

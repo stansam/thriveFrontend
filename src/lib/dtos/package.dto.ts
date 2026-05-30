@@ -1,80 +1,94 @@
-export interface PackageInclusionDTO {
-  description: string;
-  is_included: boolean;
-}
+import { z } from "zod";
 
-export interface PackageItineraryDTO {
-  day_number: number;
-  title: string;
-  description: string;
-  location: string;
-}
+export const PackageInclusionDTOSchema = z.object({
+  description: z.string(),
+  is_included: z.boolean(),
+});
+export type PackageInclusionDTO = z.infer<typeof PackageInclusionDTOSchema>;
 
-export interface PackageMediaDTO {
-  display_order: number;
-  image_url: string;
-  is_featured: boolean;
-}
+export const PackageItineraryDTOSchema = z.object({
+  day_number: z.number().int().positive(),
+  title: z.string(),
+  description: z.string(),
+  location: z.string(),
+});
+export type PackageItineraryDTO = z.infer<typeof PackageItineraryDTOSchema>;
 
-export interface PackageDTO {
-  title: string;
-  slug: string;
-  city: string;
-  country: string;
-  currency: string;
-  starting_price: number;
-  description: string;
-  duration_days: number;
-  duration_nights: number;
-  inclusions: PackageInclusionDTO[];
-  itineraries: PackageItineraryDTO[];
-  media: PackageMediaDTO[];
-  meta_title: string;
-  meta_description: string;
-  is_active: boolean;
-  is_featured: boolean;
-}
+export const PackageMediaDTOSchema = z.object({
+  display_order: z.number().int(),
+  image_url: z.string().url(),
+  is_featured: z.boolean(),
+});
+export type PackageMediaDTO = z.infer<typeof PackageMediaDTOSchema>;
 
-export interface PaginationDTO {
-    total: number;
-    limit: number;
-    offset: number;
-    total_pages: number;
-    current_page: number;
-}
+export const PackageDTOSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  city: z.string(),
+  country: z.string(),
+  currency: z.string(),
+  starting_price: z.number(),
+  description: z.string(),
+  duration_days: z.number().int().positive(),
+  duration_nights: z.number().int().nonnegative(),
+  inclusions: z.array(PackageInclusionDTOSchema),
+  itineraries: z.array(PackageItineraryDTOSchema),
+  media: z.array(PackageMediaDTOSchema),
+  meta_title: z.string(),
+  meta_description: z.string(),
+  is_active: z.boolean(),
+  is_featured: z.boolean(),
+});
+export type PackageDTO = z.infer<typeof PackageDTOSchema>;
 
-export interface GetPackagesRequestDTO {
-    q?: string;
-    country?: string;
-    min_price?: number;
-    max_price?: number;
-    min_days?: number;
-    max_days?: number;
-    limit?: number; 
-    offset?: number;
-}
+export const PaginationDTOSchema = z.object({
+  total: z.number().int(),
+  limit: z.number().int(),
+  offset: z.number().int(),
+  total_pages: z.number().int(),
+  current_page: z.number().int(),
+});
+export type PaginationDTO = z.infer<typeof PaginationDTOSchema>;
 
-export interface GetPackagesResponseDTO {
-    packages: PackageDTO[]; 
-    pagination: PaginationDTO;
-}
+export const GetPackagesResponseDTOSchema = z.object({
+  packages: z.array(PackageDTOSchema),
+  pagination: PaginationDTOSchema,
+});
+export type GetPackagesResponseDTO = z.infer<
+  typeof GetPackagesResponseDTOSchema
+>;
 
-export interface CreatePackageBookingRequestDTO {
-    slug: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    country?: string;
-    num_adults: number;
-    num_children?: number;
-    num_infants?: number;
-    special_requests: string;
-    // add_flights: boolean;
-}
+export const GetPackagesRequestDTOSchema = z.object({
+  q: z.string().optional(),
+  country: z.string().optional(),
+  min_price: z.number().optional(),
+  max_price: z.number().optional(),
+  min_days: z.number().int().optional(),
+  max_days: z.number().int().optional(),
+  limit: z.number().int().optional(),
+  offset: z.number().int().optional(),
+});
+export type GetPackagesRequestDTO = z.infer<typeof GetPackagesRequestDTOSchema>;
 
-export interface CreatePackageBookingResponseDTO {
-    booking: {
-        booking_reference: string;
-    };
-}
+export const CreatePackageBookingRequestDTOSchema = z.object({
+  slug: z.string(),
+  first_name: z.string().min(1),
+  last_name: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().min(7),
+  country: z.string().optional(),
+  num_adults: z.number().int().min(1),
+  num_children: z.number().int().nonnegative().optional(),
+  num_infants: z.number().int().nonnegative().optional(),
+  special_requests: z.string(),
+});
+export type CreatePackageBookingRequestDTO = z.infer<
+  typeof CreatePackageBookingRequestDTOSchema
+>;
+
+export const CreatePackageBookingResponseDTOSchema = z.object({
+  booking: z.object({ booking_reference: z.string() }),
+});
+export type CreatePackageBookingResponseDTO = z.infer<
+  typeof CreatePackageBookingResponseDTOSchema
+>;

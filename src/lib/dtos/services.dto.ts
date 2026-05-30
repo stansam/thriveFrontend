@@ -1,5 +1,8 @@
-export interface ServiceDTO {
-    title: string;
-    description: string;
-    icon: string;
-}
+import { z } from "zod";
+
+export const ServiceDTOSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  icon: z.string(),
+});
+export type ServiceDTO = z.infer<typeof ServiceDTOSchema>;

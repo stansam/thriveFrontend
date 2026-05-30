@@ -11,13 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Bell, Check, Trash2 } from "lucide-react"
 
-export interface Notification {
-    id: string
-    title: string
-    body: string
-    time: string
-    read: boolean
-}
+import type { Notification } from "@/lib/types/notification.types"
 
 interface NotificationsModalProps {
     open: boolean

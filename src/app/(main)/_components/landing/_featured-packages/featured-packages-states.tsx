@@ -1,13 +1,14 @@
-import { AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { IS_DEV } from '@/lib/constants/env.constants'
-import { PackageCardSkeleton } from '../_package-card/package-card-skeleton'
-import { FeaturedPackagesStatesProps } from '../../../_props/landing/featured.props'
+import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { IS_DEV } from "@/lib/constants/env.constants";
+import { PackageCardSkeleton } from "../_package-card/package-card-skeleton";
+import type { FeaturedPackagesStatesProps } from "../../../_props/landing/featured.props";
 
 export function FeaturedPackagesStates({
   isLoading,
   isError,
   isEmpty,
+  onRetry,
 }: FeaturedPackagesStatesProps) {
   return (
     <>
@@ -26,14 +27,18 @@ export function FeaturedPackagesStates({
       {isError && !IS_DEV && (
         <div className="flex flex-col justify-center items-center h-64 text-error-500 gap-2">
           <AlertCircle className="h-8 w-8" aria-hidden />
-          <p className="text-white">Unable to load featured tours at this time.</p>
-          <Button
-            variant="outline"
-            className="mt-4 border-white/20 text-white hover:bg-white/10"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </Button>
+          <p className="text-white">
+            Unable to load featured tours at this time.
+          </p>
+          {onRetry && (
+            <Button
+              variant="outline"
+              className="mt-4 border-white/20 text-white hover:bg-white/10"
+              onClick={onRetry}
+            >
+              Retry
+            </Button>
+          )}
         </div>
       )}
 
@@ -43,5 +48,6 @@ export function FeaturedPackagesStates({
         </div>
       )}
     </>
-  )
+  );
 }
+export default FeaturedPackagesStates;

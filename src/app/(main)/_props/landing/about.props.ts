@@ -1,26 +1,39 @@
-import { type MotionValue } from 'framer-motion'
-import { ServiceData } from '../../_types/landing/about-us.types'
-import type { IconKey } from '../../_types/landing/about-us.types'
+import { type MotionValue } from "framer-motion";
+import { type LucideIcon } from "lucide-react";
+import { type RefObject } from "react";
 
+export interface AboutUsSectionProps {
+  sectionRef: RefObject<HTMLDivElement | null>;
+  isInView: boolean;
+  y1: MotionValue<number>;
+  y2: MotionValue<number>;
+  rotate1: MotionValue<number>;
+  rotate2: MotionValue<number>;
+}
 
 export interface AboutParallaxBackgroundProps {
-    y1: MotionValue<number>
-    y2: MotionValue<number>
-    rotate1: MotionValue<number>
-    rotate2: MotionValue<number>
+  y1: MotionValue<number>;
+  y2: MotionValue<number>;
+  rotate1: MotionValue<number>;
+  rotate2: MotionValue<number>;
 }
 
 export interface CeoPortraitProps {
-    y1: MotionValue<number>
-    y2: MotionValue<number>
+  y1: MotionValue<number>;
+  y2: MotionValue<number>;
 }
 
-export type ServiceItemProps = Omit<ServiceData, 'position'> & { direction: 'left' | 'right' }
-
+export interface ServiceItemProps {
+  icon: LucideIcon;
+  secondaryIcon: LucideIcon;
+  title: string;
+  description: string;
+  direction: "left" | "right";
+}
 
 export interface StatCounterProps {
-    iconName: IconKey
-    value: number
-    label: string
-    suffix: string
+  icon: LucideIcon;
+  value: number;
+  label: string;
+  suffix: string;
 }
